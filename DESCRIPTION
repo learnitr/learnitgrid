@@ -1,23 +1,55 @@
 Package: learnitgrid
 Type: Package
-Version: 0.1.0
+Version: 0.7.0
 Title: Manage Rubrics or Assessment Grids for GitHub Repositories
 Description: Create and manage semi-automatically rubrics to assess GitHub
   projects (R scripts, R Markdown or Quarto files). Create directed projects
   where students have to complete documents and submit them to GitHub
   (classroom) so that they are evaluated using the rubric (or assessment grid).
-Authors@R: c(person("Philippe", "Grosjean", role = c("aut", "cre"),
+Authors@R: c(
+  person("Philippe", "Grosjean", role = c("aut", "cre"),
   email = "phgrosjean@sciviews.org",
-  comment = c(ORCID = "0000-0002-2694-9471")))
+  comment = c(ORCID = "0000-0002-2694-9471")),
+  person("Guyliann", "Engels", role = "aut",
+  email = "guyliann.engels@umons.ac.be", 
+  comment = c(ORCID = "0000-0001-9514-1014")))
 Maintainer: Philippe Grosjean <phgrosjean@sciviews.org>
 Depends:
     R (>= 4.2.0)
-Suggests: 
+Imports:
+  data.io,
+  chart,
+  collapse,
+  diffr,
+  DT,
+  flashClust,
+  fs,
+  ggplot2,
+  gh,
+  glue,
+  highr,
+  htmlwidgets,
+  lubridate,
+  parsermd,
+  shiny,
+  shinycssloaders, 
+  shinydashboard,
+  stats,
+  stringdist,
+  svMisc,
+  tibble
+Suggests:
     knitr,
     rmarkdown,
     spelling,
     testthat (>= 3.0.0)
-
+Enhances:
+    learnitdown
+Remotes:
+    SciViews/chart,
+    SciViews/data.io,
+    SciViews/svMisc,
+    learnitr/learnitdown
 License: MIT + file LICENSE
 URL: https://github.com/learnitr/learnitgrid, https://learnitr.github.io/learnitgrid/
 BugReports: https://github.com/learnitr/learnitgrid/issues

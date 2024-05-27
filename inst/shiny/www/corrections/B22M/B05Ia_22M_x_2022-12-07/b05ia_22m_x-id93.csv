@@ -1,0 +1,12 @@
+file,category,criterion,code,score,max,evaluator,comment,student
+*,common,Remarques générales sur le projet.,NA,0,0,NA,NA,NA
+*,common,Réalisation d'au moins un commit.,"(nb_commit(files = ¨docs/x.Rmd¨, cdata = cdata) > 0) - 1",0,0,auto,NA,NA
+docs/x.Rmd,rmarkdown,Compilation du document.,"is_compiled(files = ¨docs/x.Rmd¨, cdata = cdata) -1",0,0,auto,NA,NA
+docs/x.Rmd,rmarkdown,YAML = Entête complète (title+author+date).,NA,0,0,NA,NA,NA
+docs/x.Rmd,import,@import = Importation et filtrage 950m < altitude < 1050m.,NA,2,2,phgrosjean,NA,NA
+docs/x.Rmd,dataviz,@p = graphique height ~ diameter.,NA,1,1,phgrosjean,La ligne horizontale est-elle réellement nécessaire?,NA
+docs/x.Rmd,statinterpretation,+PDURATION() = interprétation du graphique.,NA,0.5,1,phgrosjean,Tu vois une asymptote dans un nuage de points à peu près linéaire? Hétéroscédasticité flagrante qui devrait suggérer de tester des transformations pour la stabiliser (pas observé par aucunb étudiant!),NA
+docs/x.Rmd,model,@model = ajuster le modèle et afficher le résumé.,NA,3,3,phgrosjean,OK,NA
+docs/x.Rmd,statinterpretation,+model = Interprétation et paramétrisation de @model.,NA,5.5,6,phgrosjean,"OK. Juste , fais attention à la validité des tests t lorsqu'il y a hétéroscédasticité.",NA
+docs/x.Rmd,dataviz,@m = Graphique du modèle.,NA,1.5,2,phgrosjean,"OK, mais pas besoin de répéter la définition de la fonction.",NA
+docs/x.Rmd,model,# Discussions et conclusions = Discussion sur l’ajustement d’un modèle.,NA,2.5,3,phgrosjean,"Oui, un peu plus d'interprétation biologique aurait été bien.",NA

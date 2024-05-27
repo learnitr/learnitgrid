@@ -1,0 +1,12 @@
+file,category,criterion,code,score,max,evaluator,comment
+*,common,Remarques générales sur le projet.,,0,0,,
+*,common,Réalisation d'au moins un commit.,"(nb_commit(files = ¨docs/x.Rmd¨, cdata = cdata) > 0) - 1",,0,,
+docs/x.Rmd,rmarkdown,Compilation du document.,"is_compiled(files = ¨docs/x.Rmd¨, cdata = cdata) -1",,0,,
+docs/x.Rmd,rmarkdown,YAML = Entête complète (title+author+date).,,0,0,,
+docs/x.Rmd,import,@import = Importation et filtrage 950m < altitude < 1050m.,,,2,,
+docs/x.Rmd,dataviz,@p = graphique height ~ diameter.,,,1,,
+docs/x.Rmd,statinterpretation,+p = interprétation du graphique.,,,1,,
+docs/x.Rmd,model,@model = ajuster le modèle et afficher le résumé.,,,3,,
+docs/x.Rmd,statinterpretation,+model = Interprétation et paramétrisation de @model.,,,6,,
+docs/x.Rmd,dataviz,@m = Graphique du modèle.,,,2,,
+docs/x.Rmd,model,# Discussions et conclusions = Discussion sur l’ajustement d’un modèle.,,,3,,
