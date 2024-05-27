@@ -10,9 +10,16 @@ Authors@R: c(person("Philippe", "Grosjean", role = c("aut", "cre"),
   email = "phgrosjean@sciviews.org",
   comment = c(ORCID = "0000-0002-2694-9471")))
 Maintainer: Philippe Grosjean <phgrosjean@sciviews.org>
-Depends: R (>= 4.2.0)
+Depends:
+    R (>= 4.2.0)
+Suggests: 
+    knitr,
+    rmarkdown,
+    spelling,
+    testthat (>= 3.0.0)
+
 License: MIT + file LICENSE
-URL: https://github.com/learnitr/learnitgrid
+URL: https://github.com/learnitr/learnitgrid, https://learnitr.github.io/learnitgrid/
 BugReports: https://github.com/learnitr/learnitgrid/issues
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
@@ -21,8 +28,3 @@ Encoding: UTF-8
 Language: en-US
 ByteCompile: yes
 Config/testthat/edition: 3
-Suggests: 
-    knitr,
-    rmarkdown,
-    spelling,
-    testthat (>= 3.0.0)

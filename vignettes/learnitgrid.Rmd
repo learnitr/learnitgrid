@@ -1,8 +1,12 @@
 ---
-title: "learnitgrid"
-output: rmarkdown::html_vignette
+title: "learnitgrid - Rubrics or Assessment Grids for R Documents in GitHub Repos"
+author: "Philippe Grosjean (phgrosjean@sciviews.org)"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    fig_caption: true
 vignette: >
-  %\VignetteIndexEntry{learnitgrid}
+  %\VignetteIndexEntry{learnitgrid - Rubrics or Assessment Grids for R Documents in GitHub Repos}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -17,3 +21,5 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(learnitgrid)
 ```
+
+TODO...

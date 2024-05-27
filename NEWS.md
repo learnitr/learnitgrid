@@ -1,4 +1,3 @@
-1
-# learnitgrid (development version)
+# learnitgrid 0.1.0
 
-* Initial CRAN submission.
+-   Initial version of the package.

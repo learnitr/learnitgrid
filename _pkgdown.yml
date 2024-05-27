@@ -1,0 +1,21 @@
+url: https://learnitr.github.io/learnitgrid
+
+destination: docs
+
+development:
+  mode: auto
+
+template:
+  params:
+    bootswatch: spacelab
+    mathjax: true
+
+toc:
+  depth: 3
+
+home:
+  strip_header: true
+
+authors:
+  Philippe Grosjean:
+    href: https://phgrosjean.sciviews.org
