@@ -1,3 +1,7 @@
+# learnitgrid 0.7.1
+
+-   Several package dependencies are eliminated.
+
 # learnitgrid 0.7.0
 
 -   Repo transferred to learnitr.

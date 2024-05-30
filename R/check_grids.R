@@ -1,4 +1,4 @@
-# Summarize and check evaluation grids (corrections) for learnitdown projects
+# Summarize and check evaluation grids (corrections) for learnitr projects
 # Copyright (c) 2021-2022, Philippe Grosjean & Guyliann Engels
 #
 # Warning: correction for grid_one when grid is a data.table! and NA everywhere -> NA
@@ -36,7 +36,7 @@ check_grids <- function(dir, save.log = TRUE, save.rds = TRUE) {
     stop("'No correction grids found in the directory ", dir)
 
   # Initialize the results
-  res <- tibble(
+  res <- data.frame(
     assignment = character(0),
     team       = character(0),
     student    = character(0),
@@ -54,7 +54,7 @@ check_grids <- function(dir, save.log = TRUE, save.rds = TRUE) {
       nchar(basename(grids[i])) - 4)
 
     # Get and process the grid
-    grid <- suppressMessages(read(grids[i]))
+    grid <- suppressMessages(read.csv(grids[i]))
     # If the column student is missing, create one filled with ""
     if (is.null(suppressWarnings(grid$student)) ||
         all(grid$student == "", na.rm = TRUE)) {
@@ -69,7 +69,7 @@ check_grids <- function(dir, save.log = TRUE, save.rds = TRUE) {
       students <- students[students != ""]
     }
     # Create a results table for this team
-    res2 <- tibble(
+    res2 <- data.frame(
       assignment = assignment,
       team       = team,
       student    = students,
@@ -119,7 +119,7 @@ check_grids <- function(dir, save.log = TRUE, save.rds = TRUE) {
   }
 
   if (isTRUE(save.rds)) {
-    write$rds(res, path(dir, "summary.rds"))
+    saveRDS(res, path(dir, "summary.rds"))
   }
 
   # Check a couple of cases:

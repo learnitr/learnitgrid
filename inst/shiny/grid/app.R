@@ -2,10 +2,8 @@
 
 library(shiny)
 library(shinydashboard)
+library(learnitgrid)
 
-# Initialization ----------------------------------------------------------
-
-library("learnitgrid")
 
 # Global constants --------------------------------------------------------
 
@@ -90,15 +88,16 @@ if (!exists("git_stats_tz"))
 
 # Read csv files without issuing messages
 read <- function(file) {
-  suppressMessages(data.io::read(file))
+  #suppressMessages(data.io::read(file))
+  read.csv(file)
 }
 
 # Global objects ----------------------------------------------------------
 
 repos_file        <- file_path_check(root_dir, repos_filename)
-repositories      <- suppressMessages(read(repos_file))
+repositories      <- suppressMessages(read.csv(repos_file))
 assign_file       <- file_path_check(root_dir, assign_filename)
-assignments       <- suppressMessages(read(assign_file))
+assignments       <- suppressMessages(read.csv(assign_file))
 order             <- NULL     # The order for the table by criterion
 
 course_dirs <- fs::dir_ls(base_corr_dir, type = "directory")
@@ -392,10 +391,10 @@ shinyServer <- function(input, output, session) {
     dir <- fs::path(base_corr_dir, course, input$correction, "summary.rds")
 
     if (fs::file_exists(dir)) {
-      res <- suppressMessages(read(dir))
+      res <- suppressMessages(readRDS(dir))
     } else {
       check_grids(fs::path(base_corr_dir, course, input$correction))
-      res <- suppressMessages(read(dir))
+      res <- suppressMessages(readRDS(dir))
     }
     #message(glue::glue('
     #========================
@@ -529,7 +528,7 @@ shinyServer <- function(input, output, session) {
       paste0(context$assignment[1],"-summary-", Sys.Date(), ".csv")
     },
     content = function(file) {
-      data.io::write$csv(download(), file)
+      write.csv(download(), file, row.names = FALSE)
     }
   )
 
@@ -539,7 +538,8 @@ shinyServer <- function(input, output, session) {
       paste0(context$assignment[1],"-summary-", Sys.Date(), ".xlsx")
     },
     content = function(file) {
-      data.io::write$xlsx(download(), file)
+      #data.io::write$xlsx(download(), file)
+      writexl::write_xlsx(download(), file)
     }
   )
 
@@ -553,11 +553,12 @@ shinyServer <- function(input, output, session) {
     x <- summary_react()
     #x1 <- sum(!(x$missing > 1))
     x1 <- mean(x$score_20)
-    chart::chart(data = x, ~ score_20) +
+    ggplot2::ggplot(data = x, aes(x = .data$score_20)) +
       ggplot2::geom_histogram(bins = nrow(x)/2) +
       ggplot2::geom_vline(xintercept = x1, color = "red", size = 1.5) +
       ggplot2::labs(x = "Note des grilles completées [/20] - moyenne en rouge",
-           y = "Dénombrement")
+           y = "Dénombrement") +
+      cowplot::theme_cowplot()
   })
 
   output$summary_tab <- DT::renderDataTable({
@@ -673,17 +674,20 @@ shinyServer <- function(input, output, session) {
     stat_red <- x[tolower(x$github_repository) %in% tolower(input$grid), ]
 
     if (input$contri_split == "séparer") {
-      p <- chart::chart(data = stat_red,
-        change_cum1 ~ author_date %col=% author | extension)
+      p <- ggplot2::ggplot(data = stat_red,
+        x = .data$author_date, y = .data$change_cum, col = .data$author)) +
+        ggplot2::facet_wrap(vars(extension)) +
+        ggplot2::geom_step(size = 1, na.rm = TRUE) +
     } else {
-      p <- chart::chart(data = stat_red,
-        change_cum ~ author_date %col=% author)
+      p <- ggplot2::ggplot(data = stat_red,
+        aes(x = .data$author_date, y = .data$change_cum, col = .data$author))
     }
     p <- p +
       ggplot2::geom_step(size = 1, na.rm = TRUE) +
       ggplot2::geom_point(na.rm = TRUE) +
       ggplot2::theme(legend.position = "bottom") +
-      ggplot2::labs(x = "Temps", y = "Somme cumulée des lignes modifiés par projet", color = "Auteur")
+      ggplot2::labs(x = "Temps", y = "Somme cumulée des lignes modifiés par projet", color = "Auteur") +
+      cowplot::theme_cowplot()
 
     assign_infos <- context$assign_infos
     assign_time <- c(start = assign_infos$start[1], end = assign_infos$end[1])
@@ -890,7 +894,7 @@ shinyServer <- function(input, output, session) {
         order[input$correction_table_criterion_cell_edit$row]]
       # Read it
       message("Changing ", corr_file, " rubric...")
-      corrs <- suppressMessages(read(corr_file))
+      corrs <- suppressMessages(read.csv(corr_file))
       # Make sure columns score, evaluator and comment are the right type
       corrs$score <- as.numeric(corrs$score)
       corrs$evaluator <- as.character(corrs$evaluator)
@@ -975,7 +979,7 @@ shinyServer <- function(input, output, session) {
         corr_file <- context$corr_files[corr_pos]
         message("Changing ", corr_file, " rubric...")
         # Read it
-        corrs <- suppressMessages(read(corr_file))
+        corrs <- suppressMessages(read.csv(corr_file))
         # Make sure columns score, evaluator and comment are the right type
         corrs$score <- as.numeric(corrs$score)
         corrs$evaluator <- as.character(corrs$evaluator)
@@ -1019,7 +1023,7 @@ shinyServer <- function(input, output, session) {
             corrs[pos, "score"] <- num_score
             corrs[pos, "comment"] <- comment
             corrs[pos, "evaluator"] <- input$evaluator
-            data.io::write$csv(corrs, corr_file)
+            write.csv(corrs, corr_file, row.names = FALSE)
           }
         } else {# !is_ok
           msg <- paste0("ERROR: score '", score,

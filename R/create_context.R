@@ -92,7 +92,7 @@ base_repos_dir, repositories, assignments, github_url, branch) {
   }
 
   # Read information from the template file
-  templ_corrs <- suppressMessages(read(templ_file))
+  templ_corrs <- suppressMessages(read.csv(templ_file))
   if (NROW(templ_corrs) < 1)
     stop("No correction items found in '", templ_file,
       "', or error reading the file.")

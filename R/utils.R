@@ -43,15 +43,13 @@ file_path_check <- function(...) {
 #'
 #' @return A character string of the same length as `x` with "educated" labels.
 #' @export
-#' @importFrom svMisc aka
 #'
 #' @examples
 #' chunk_labels(c("Summer is hot", "", NA, " ", "Winter is cold  "))
 chunk_labels <- function(x) {
   # Note: knitr accepts spaces and accented character, but not parse_rmd()!
-  trim_ws <- aka(trimws)
-  is_text <- nchar(trim_ws(x)) > 0 & !is.na(x)
-  x2 <- trim_ws(x[is_text])
+  is_text <- nchar(trimws(x)) > 0 & !is.na(x)
+  x2 <- trimws(x[is_text])
   x2 <- make.names(x2)
   x2 <- iconv(x2, "utf8", "ASCII", sub = "byte")
   x2 <- gsub("[<>]", "", x2)

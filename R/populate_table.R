@@ -32,7 +32,7 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
     if (length(grids) == 1) {
       # Single grid, all items, also !{login} items resolved for the group
       # so, need to get these from the correction grid directly
-      templ_corrs <- suppressMessages(read(context$corr_files[gsel]))
+      templ_corrs <- suppressMessages(read.csv(context$corr_files[gsel]))
     }
     items <- templ_corrs$criterion
   }
@@ -67,7 +67,7 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
     evaluators <- rep("", n)
     comments <- rep("", n)
     for (i in 1:n) {
-      corrs <- suppressMessages(read(context$corr_files[gsel][i]))
+      corrs <- suppressMessages(read.csv(context$corr_files[gsel][i]))
       pos1 <- (1:nrow(corrs))[corrs$criterion == item]
       if (length(pos1) < 1)
         stop("Item ", item, " not found")
@@ -384,7 +384,7 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
               # We collect markdown paragraphs beneath the chunk and before
               # another chunk or a section
               # Transform in a tibble
-              rmd <- as_tibble(rmd)
+              #rmd <- as_tibble(rmd)
               # Get the position of the chunk
               rmd_pos <- (1:nrow(rmd))[rmd$label == chunk]
               rmd_pos <- rmd_pos[!is.na(rmd_pos)]

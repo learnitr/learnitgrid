@@ -16,7 +16,7 @@ exclude_authors = "github-classroom[bot]", type = "all", tz = "UTC") {
 
   if (!file_exists(git_stats_file))
     stop("The file ", git_stats_file, " does not exist")
-  stat <- suppressMessages(read(git_stats_file))
+  stat <- suppressMessages(read.csv(git_stats_file))
 
   # TODO: allow for more types too (e.g., doc, docx, pdf, ppt, pptx, ...)
   vec <- match.arg(type, choices = c("all", "R", "Rmd", "Qmd"),

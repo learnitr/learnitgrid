@@ -20,7 +20,7 @@ This package is associated with and enhances the {learnitdown} package.
 
 ## Installation
 
-You can install the development version of learnitgrid from [GitHub](https://github.com/) with:
+You can install the development version of {learnitgrid} from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("remotes")
