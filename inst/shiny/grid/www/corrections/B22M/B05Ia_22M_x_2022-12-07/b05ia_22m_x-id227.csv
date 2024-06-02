@@ -3,10 +3,10 @@ file,category,criterion,code,score,max,evaluator,comment,student
 *,common,Réalisation d'au moins un commit.,"(nb_commit(files = ¨docs/x.Rmd¨, cdata = cdata) > 0) - 1",0,0,auto,NA,NA
 docs/x.Rmd,rmarkdown,Compilation du document.,"is_compiled(files = ¨docs/x.Rmd¨, cdata = cdata) -1",0,0,auto,NA,NA
 docs/x.Rmd,rmarkdown,YAML = Entête complète (title+author+date).,NA,0,0,NA,NA,NA
-docs/x.Rmd,import,@import = Importation et filtrage 950m < altitude < 1050m.,NA,2,2,phgrosjean,NA,NA
-docs/x.Rmd,dataviz,@p = graphique height ~ diameter.,NA,0.9,1,phgrosjean,Points limite pâles,NA
-docs/x.Rmd,statinterpretation,+p = interprétation du graphique.,NA,0.25,1,phgrosjean,Très insuffisant comme analyse. Hétéroscédasticité flagrante qui devrait suggérer de tester des transformations pour la stabiliser (pas observé par aucunb étudiant!),NA
-docs/x.Rmd,model,@model = ajuster le modèle et afficher le résumé.,NA,3,3,phgrosjean,OK,NA
-docs/x.Rmd,statinterpretation,+model = Interprétation et paramétrisation de @model.,NA,4,6,phgrosjean,"OK, mais juste un modèle, c'est maigre pour décider si c'est le meilleur, et comparer sur un graphique et via AIC. Attention aussi aux chiffres significatifs dans la paramétrisation.",NA
-docs/x.Rmd,dataviz,@m = Graphique du modèle.,NA,1.5,2,phgrosjean,OK mais les points sont un peu pâles,NA
-docs/x.Rmd,model,# Discussions et conclusions = Discussion sur l’ajustement d’un modèle.,NA,2,3,phgrosjean,"OK, et par rapport aux modèles?",NA
+docs/x.Rmd,import,@import = Importation et filtrage 950m < altitude < 1050m.,NA,2,2,eval02,NA,NA
+docs/x.Rmd,dataviz,@p = graphique height ~ diameter.,NA,0.9,1,eval02,Points limite pâles,NA
+docs/x.Rmd,statinterpretation,+p = interprétation du graphique.,NA,0.25,1,eval02,Très insuffisant comme analyse. Hétéroscédasticité flagrante qui devrait suggérer de tester des transformations pour la stabiliser (pas observé par aucunb étudiant!),NA
+docs/x.Rmd,model,@model = ajuster le modèle et afficher le résumé.,NA,3,3,eval02,OK,NA
+docs/x.Rmd,statinterpretation,+model = Interprétation et paramétrisation de @model.,NA,4,6,eval02,"OK, mais juste un modèle, c'est maigre pour décider si c'est le meilleur, et comparer sur un graphique et via AIC. Attention aussi aux chiffres significatifs dans la paramétrisation.",NA
+docs/x.Rmd,dataviz,@m = Graphique du modèle.,NA,1.5,2,eval02,OK mais les points sont un peu pâles,NA
+docs/x.Rmd,model,# Discussions et conclusions = Discussion sur l’ajustement d’un modèle.,NA,2,3,eval02,"OK, et par rapport aux modèles?",NA

@@ -10,7 +10,8 @@ populate_table(
   context,
   reorder = (length(items) == 1),
   highlight = FALSE,
-  max_lines = 20L
+  max_lines = 30L,
+  on_github = TRUE
 )
 }
 \arguments{
@@ -30,6 +31,9 @@ computed as such by default).}
 
 \item{max_lines}{The maximum number of content lines that are displayed
 (truncate very long contents).}
+
+\item{on_github}{Should the links point to the GitHub repository or to the
+local files (default is \code{TRUE})?}
 }
 \value{
 A data frame with the content to be displayed in a DT::datatable object.

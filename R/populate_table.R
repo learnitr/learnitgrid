@@ -16,11 +16,15 @@
 #' @param highlight Syntax highlighting for code (slow, thus `FALSE` by default)
 #' @param max_lines The maximum number of content lines that are displayed
 #'   (truncate very long contents).
+#' @param on_github Should the links point to the GitHub repository or to the
+#'   local files (default is `TRUE`)?
 #'
 #' @return A data frame with the content to be displayed in a DT::datatable object.
 #' @export
 populate_table <- function(items, grids = "all", context,
-reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
+    reorder = (length(items) == 1), highlight = FALSE, max_lines = 30L,
+    on_github = TRUE) {
+  on_github <- isTRUE(on_github)
   if (grids == "all")
     grids <- context$repos_names
   # This selects the grids to use (one, several or all)
@@ -39,7 +43,7 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
 
   res <- NULL # The resulting object
   for (item in items) {
-    pos <- (1:nrow(templ_corrs))[templ_corrs$criterion == item]
+    pos <- (1:NROW(templ_corrs))[templ_corrs$criterion == item]
     templ_corr <- templ_corrs[pos, ]
 
     # Get some more data from the correction items
@@ -57,6 +61,8 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
       item_type <- "R"
     } else if (tolower(substring(item_file, nchar(item_file) - 3L)) == ".rmd") {
       item_type <- "Rmd"
+    } else if (tolower(substring(item_file, nchar(item_file) - 3L)) == ".qmd") {
+      item_type <- "Rmd" # Currently, Quarto documents are treated ad R Markdown
     } else {
       item_type <- "*"
     }
@@ -68,7 +74,7 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
     comments <- rep("", n)
     for (i in 1:n) {
       corrs <- suppressMessages(read.csv(context$corr_files[gsel][i]))
-      pos1 <- (1:nrow(corrs))[corrs$criterion == item]
+      pos1 <- (1:NROW(corrs))[corrs$criterion == item]
       if (length(pos1) < 1)
         stop("Item ", item, " not found")
       if (length(pos1) > 1)
@@ -86,7 +92,7 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
       '<a href="{repos_urls}" target="githubwindow">repo</a>')
 
     # If we have a subdir, we offer the link to go there directly
-    if (item_subdir != "") {
+    if (!is.null(item_subdir) && item_subdir != "") {
       repos_subdirs <- path(repos_urls, "blob", context$branch, item_subdir)
       links <- c(links,
         '<a href="{repos_subdirs}" target="githubwindow">{item_subdir}</a>')
@@ -96,24 +102,53 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
 
     # If the file type is an R script, add a link to it + another one to get it
     if (item_type == "R") {
-      r_files <- path(repos_urls, "blob",
-        context$branch, item_subdir, item_file)
-      r_local_files <- path(context$repos_dirs[gsel], item_subdir, item_file)
-      links <- c(links,
-        '<a href="{r_files}" target="sourcewindow">R script</a>',
-        '<a href="{www_relative(r_local_files)}" target="_blank">(get it)</a>')
+      if (is.null(item_subdir)) {
+        r_files <- path(repos_urls, "blob", context$branch, item_file)
+        r_local_files <- path(context$repos_dirs[gsel], item_file)
+        #        r_corr_files <- path(paste0(context$corr_dirs[gsel], "_correction"),
+        #          item_file)
+      } else {# There is an item_subdir
+        r_files <- path(repos_urls, "blob",
+          context$branch, item_subdir, item_file)
+        r_local_files <- path(context$repos_dirs[gsel], item_subdir, item_file)
+        #        r_corr_files <- path(paste0(context$corr_dirs[gsel], "_correction"),
+        #          item_subdir, item_file)
+      }
+      if (on_github) {
+        links <- c(links,
+          '<a href="{r_files}" target="sourcewindow">R script</a>',
+          '<a href="{www_relative(r_local_files)}" target="_blank">(get it)</a>')
+      } else {# Local files only
+        links <- c(links,
+          '<a href="{www_relative(r_local_files)}" target="_blank">(get R script)</a>')
+      }
+
+      # If a correction repo is available, add a link to the corrected file
+      #      links <- ifelse(fs::file_exists(sub("^\\.", "./www", www_relative(r_corr_files))), c(links,
+      #        '<a href="{www_relative(r_corr_files)}" target="corrwindow">solution</a>'),
+      #        links)
     } else {
       r_files <- character(0)
       r_local_files <- character(0)
+      #      r_corr_files <- character(0)
     }
 
     # If the file type is an Rmd report, add a link to the HTML report + a link
     # to the Rmd file on GitHub + a get it from local version
     if (item_type == "Rmd") {
-      rmd_files <- path(repos_urls, "blob",
-        context$branch, item_subdir, item_file)
-      rmd_local_files <- path(context$repos_dirs[gsel], item_subdir, item_file)
-      html_local_files <- sub("\\.Rmd$", ".html", rmd_local_files)
+      if (is.null(item_subdir)) {
+        rmd_files <- path(repos_urls, "blob", context$branch, item_file)
+        rmd_local_files <- path(context$repos_dirs[gsel], item_file)
+        #        rmd_corr_files <- path(paste0(context$repos_dirs[gsel], "_correction"),
+        #          item_file)
+      } else {# There is an item_subdir
+        rmd_files <- path(repos_urls, "blob",
+          context$branch, item_subdir, item_file)
+        rmd_local_files <- path(context$repos_dirs[gsel], item_subdir, item_file)
+        #        rmd_corr_files <- path(paste0(context$repos_dirs[gsel], "_correction"),
+        #          item_subdir, item_file)
+      }
+      html_local_files <- sub("\\.[qR]md$", ".html", rmd_local_files)
       # When the Rmd does not compile, there is no associated HTML file.
       # However, there may be a _corr.html file instead... Here we don't look
       # for it, but we just replace .html by _corr.html where the .html file
@@ -124,14 +159,23 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
           html_local_files[!exists_html_file])
         html_local_files[!exists_html_file] <- corr_html_local_files
       }
-      links <- c(links,
-        '<a href="{www_relative(html_local_files)}" target="htmlwindow">html</a>',
-        '<a href="{rmd_files}" target="sourcewindow">Rmd</a>',
-        '<a href="{www_relative(rmd_local_files)}" target="_blank">(get it)</a>'
-      )
+      doc_type <- if (any(grepl("\\.qmd$", rmd_local_files))) "quarto" else "Rmd"
+      if (on_github) {
+        links <- c(links,
+          '<a href="{www_relative(html_local_files)}" target="htmlwindow">html</a>',
+          '<a href="{rmd_files}" target="sourcewindow">{doc_type}</a>',
+          '<a href="{www_relative(rmd_local_files)}" target="_blank">(get it)</a>'
+        )
+      } else {
+        links <- c(links,
+          '<a href="{www_relative(html_local_files)}" target="htmlwindow">html</a>',
+          '<a href="{www_relative(rmd_local_files)}" target="_blank">(get {doc_type})</a>'
+        )
+      }
+
       # If there are _corr.Rmd and .Rmd files, add a _diff.html and a link to it
-      corr_rmd_local_files <- sub("\\.Rmd$", "_corr.Rmd", rmd_local_files)
-      diff_files <- sub("\\.Rmd$", "_diff.html", rmd_local_files)
+      corr_rmd_local_files <- sub("\\.([qR])md$", "_corr.\\1md", rmd_local_files)
+      diff_files <- sub("\\.[qR]md$", "_diff.html", rmd_local_files)
       exists_both_rmd_files <- file_exists(rmd_local_files) &
         file_exists(corr_rmd_local_files)
       if (any(exists_both_rmd_files)) {
@@ -143,7 +187,7 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
             sub("^\\.", "./www", www_relative(rmd_local_files[pos_diff])),
             # Corr. Rmd file
             sub("^\\.", "./www", www_relative(corr_rmd_local_files[pos_diff])),
-            before = "original", after = "corrected"),
+            before = "original", after = "corrig\u00e9"),
             title = basename(rmd_local_files[pos_diff]),
             file = diff_files[pos_diff]))
         # Add a link to these files (only where diff_files exists)
@@ -151,11 +195,16 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
         diff_links[pos_diffs] <- "diff"
         links <- c(links,
           '<a href="{www_relative(diff_files)}" target="diffwindow">{diff_links}</a>')
+        # Possibly add a link to the corrected Rmd file
+        #        links <- ifelse(fs::file_exists(sub("^\\.", "./www", www_relative(rmd_corr_files))), c(links,
+        #          '<a href="{www_relative(rmd_corr_files)}" target="corrwindow">solution</a>'),
+        #          links)
       }
     } else {
       rmd_files <- character(0)
       rmd_local_files <- character(0)
       html_local_files <- character(0)
+      #      rmd_corr_files <- character(0)
     }
 
     # We paste all links items together, separated by ' ', then, we resolve them
@@ -194,7 +243,7 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
         r_content <- try(suppressWarnings(readLines(r_local_files[i])),
           silent = TRUE)
         if (inherits(r_content, "try-error")) {
-          codes[i] <- "<b>FILE NOT FOUND</b>"
+          codes[i] <- "<b>FICHIER INTROUVABLE</b>"
         } else {
           # Syntax highlighting
           if (isTRUE(highlight))
@@ -218,7 +267,7 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
           rmd_content <- try(suppressWarnings(readLines(rmd_local_files[i])),
             silent = TRUE)
           if (inherits(rmd_content, "try-error")) {
-            headers[i] <- "<b>FILE NOT FOUND</b>"
+            headers[i] <- "<b>FICHIER INTROUVABLE</b>"
           } else {
             # Knitr now accepts spaces in chunks but not parse_rmd => replace
             # them with another character
@@ -227,7 +276,7 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
             rmd <- try(parse_rmd(rmd_content, allow_incomplete = TRUE),
               silent = TRUE)
             if (inherits(rmd, "try-error")) {
-              headers[i] <- "<b>SYNTAX ERROR RMD</b>"
+              headers[i] <- "<b>ERREUR SYNTAXE RMD</b>"
             } else {
               header <- as_document(rmd_select(rmd, has_type("rmd_yaml_list")))
               # Eliminate empty lines, or lines with only ---
@@ -255,7 +304,7 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
           rmd_content <- try(suppressWarnings(readLines(rmd_local_files[i])),
             silent = TRUE)
           if (inherits(rmd_content, "try-error")) {
-            sections[i] <- "<b>FILE NOT FOUND</b>"
+            sections[i] <- "<b>FICHIER INTROUVABLE</b>"
           } else {
             # Knitr now accepts spaces in chunks but not parse_rmd => replace
             # them with another character
@@ -264,7 +313,7 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
             rmd <- try(parse_rmd(rmd_content, allow_incomplete = TRUE),
               silent = TRUE)
             if (inherits(rmd, "try-error")) {
-              sections[i] <- "<b>SYNTAX ERROR RMD</b>"
+              sections[i] <- "<b>ERREUR SYNTAXE RMD</b>"
             } else {
               section <- try(as_document(rmd_select(rmd,
                 by_section(header, keep_parents = FALSE))), silent = TRUE)
@@ -279,7 +328,7 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
                   by_section(paste0(header, "  "), keep_parents = FALSE))),
                   silent = TRUE)
               if (inherits(section, "try-error")) {
-                section[i] <- "<b>TITLE NOT FOUND</b>"
+                section[i] <- "<b>TITRE INTROUVABLE</b>"
               } else {
                 # Eliminate empty lines, or containing only spaces
                 section <- section[!grepl("^[ \t]*$", section)]
@@ -309,7 +358,7 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
           rmd_content <- try(suppressWarnings(readLines(rmd_local_files[i])),
             silent = TRUE)
           if (inherits(rmd_content, "try-error")) {
-            codes[i] <- "<b>FILE NOT FOUND</b>"
+            codes[i] <- "<b>FICHIER INTROUVABLE</b>"
           } else {
             # Knitr now accepts spaces in chunks but not parse_rmd => replace
             # them with another character
@@ -318,12 +367,12 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
             rmd <- try(parse_rmd(rmd_content, allow_incomplete = TRUE),
               silent = TRUE)
             if (inherits(rmd, "try-error")) {
-              codes[i] <- "<b>SYNTAX ERROR RMD</b>"
+              codes[i] <- "<b>ERREUR SYNTAXE RMD</b>"
             } else {
               code <- try(as_document(rmd_select(rmd, has_label(chunk))),
                 silent = TRUE)
               if (inherits(code, "try-error")) {
-                codes[i] <- "<b>CHUNK NOT FOUND</b>"
+                codes[i] <- "<b>CHUNK NON TROUVE</b>"
               } else {
                 # TODO: extract fig.cap if present
                 # Eliminate empty lines, containing only spaces,
@@ -348,8 +397,13 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
 
         # Path to the plots (if they exist, or to the first one if there are
         # several plots that are generated by that chunk)
-        plot_local_files <- path(context$repos_dirs[gsel], item_subdir, sub(
-          "\\.Rmd$", "_files", item_file), "figure-html", paste0(key, "-1.png"))
+        if (is.null(item_subdir)) {
+          plot_local_files <- path(context$repos_dirs[gsel], sub(
+            "\\.[qR]md$", "_files", item_file), "figure-html", paste0(key, "-1.png"))
+        } else {# There is an item_subdir
+          plot_local_files <- path(context$repos_dirs[gsel], item_subdir, sub(
+            "\\.[qR]md$", "_files", item_file), "figure-html", paste0(key, "-1.png"))
+        }
         dat$plot <- glue(paste0(
           '<a href="{www_relative(plot_local_files)}" target="plotwindow">',
           '<img src="{www_relative(plot_local_files)}" height="200px"></a>'))
@@ -370,7 +424,7 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
           rmd_content <- try(suppressWarnings(readLines(rmd_local_files[i])),
             silent = TRUE)
           if (inherits(rmd_content, "try-error")) {
-            paras[i] <- "<b>FILE NOT FOUND</b>"
+            paras[i] <- "<b>FICHIER INTROUVABLE</b>"
           } else {
             # Knitr now accepts spaces in chunks but not parse_rmd => replace
             # them with another character
@@ -379,14 +433,15 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
             rmd <- try(parse_rmd(rmd_content, allow_incomplete = TRUE),
               silent = TRUE)
             if (inherits(rmd, "try-error")) {
-              paras[i] <- "<b>SYNTAX ERROR RMD</b>"
+              paras[i] <- "<b>ERREUR SYNTAXE RMD</b>"
             } else {
               # We collect markdown paragraphs beneath the chunk and before
               # another chunk or a section
               # Transform in a tibble
               #rmd <- as_tibble(rmd)
+              rmd <- as.data.frame(rmd)
               # Get the position of the chunk
-              rmd_pos <- (1:nrow(rmd))[rmd$label == chunk]
+              rmd_pos <- (1:NROW(rmd))[rmd$label == chunk]
               rmd_pos <- rmd_pos[!is.na(rmd_pos)]
               if (length(rmd_pos) < 1) {
                 paras[i] <- "<b>CHUNK NOT FOUND</b>"
@@ -394,9 +449,9 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
                 # Keep only data after the chunk
                 rmd <- rmd[-(1:rmd_pos), ]
                 # Seek for the first non R markdown item in the truncated df
-                rmd_pos2 <- (1:nrow(rmd))[rmd$type != "rmd_markdown"][1]
+                rmd_pos2 <- (1:NROW(rmd))[rmd$type != "rmd_markdown"][1]
                 if (!is.na(rmd_pos2)) # Otherwise, we keep everything to the end
-                  rmd <- rmd[-(rmd_pos2:nrow(rmd)), ]
+                  rmd <- rmd[-(rmd_pos2:NROW(rmd)), ]
                 para <- as_document(rmd)
                 # Eliminate empty lines, containing only spaces, or comments
                 # starting with <!--
@@ -417,8 +472,13 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
 
         # Path to the plots (if they exist, or to the first one if there are
         # several plots that are generated by that chunk)
-        plot_local_files <- path(context$repos_dirs[gsel], item_subdir, sub(
-          "\\.Rmd$", "_files", item_file), "figure-html", paste0(key, "-1.png"))
+        if (is.null(item_subdir)) {
+          plot_local_files <- path(context$repos_dirs[gsel], sub(
+            "\\.[qR]md$", "_files", item_file), "figure-html", paste0(key, "-1.png"))
+        } else {# There is an item_subdir
+          plot_local_files <- path(context$repos_dirs[gsel], item_subdir, sub(
+            "\\.[qR]md$", "_files", item_file), "figure-html", paste0(key, "-1.png"))
+        }
         dat$plot <- glue(paste0(
           '<a href="{www_relative(plot_local_files)}" target="plotwindow">',
           '<img src="{www_relative(plot_local_files)}" height="200px"></a>'))
@@ -427,8 +487,8 @@ reorder = (length(items) == 1), highlight = FALSE, max_lines = 20L) {
 
       } else {# Simple entry
         # We just check if the Rmd compiled or not by looking for the HTML file
-        compiled <- rep("<b>Rmd not knitted</b>", n)
-        compiled[exists_html_file] <- "Rmd knitted"
+        compiled <- rep("<b>qmd/Rmd pas compil\u00e9</b>", n)
+        compiled[exists_html_file] <- "qmd/Rmd compil\u00e9"
         dat$content <- compiled
       }
 

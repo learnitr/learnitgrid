@@ -1,3 +1,13 @@
+# learnitgrid 0.8.0
+
+-   An extended example dataset is added (compressed in the package, but can be easily uncompressed using `install_example()`).
+
+-    The `run_grid()` function is added to easily run the learnitgrid Shiny application.
+
+-   Adding support for Quarto .qmd files.
+
+-   New option docs_on_github to specify the location of the documents for the links. It is `TRUE` by default, which corresponds to previous behavior (i.e., links to GitHub files). If `FALSE`, the links will be to local files, except for "repo" and the subdirectory). 
+
 # learnitgrid 0.7.1
 
 -   Several package dependencies are eliminated.

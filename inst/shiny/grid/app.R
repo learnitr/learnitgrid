@@ -7,18 +7,21 @@ library(learnitgrid)
 
 # Global constants --------------------------------------------------------
 
+learnitgrid_version <- "0.8.0"
 # Absolute path to the data directory, use environment variable on RSConnect
 # and default value (unset = ) locally
-data_dir          <- Sys.getenv("LEARNITGRID_DATA_DIR",
-                       unset = getOption("learnintgrid.data.dir",
-                         fs::path(getwd(), "www")))
-root_dir        <- dir_path_check(data_dir)
+data_dir            <- Sys.getenv("LEARNITGRID_DATA_DIR",
+                                  unset = getOption("learnitgrid.data.dir",
+                                    fs::path(getwd(), "www")))
+root_dir            <- dir_path_check(data_dir)
 
+message("== learnitgrid version ", learnitgrid_version, " running in: ",
+  root_dir, " ==")
 # Possibly input these values from a learnitgrid_config.R either in root_dir
-# or (if not present) in www
+# or (if not present) in the same dir as app.R
 config_file <- fs::path(root_dir, "learnitgrid_config.R")
 if (!fs::file_exists(config_file))
-  config_file <- fs::path("www", "learnitgrid_config.R")
+  config_file <- fs::path("learnitgrid_config.R")
 if (fs::file_exists(config_file)) {
   message("Sourcing config file ", config_file, "...")
   source(config_file, encoding = "UTF-8") #, echo = TRUE)
@@ -51,20 +54,37 @@ if (!exists("assign_filename"))
   assign_filename <- Sys.getenv("LEARNITGRID_ASSIGN",
                        unset = "assignments.csv")
 
+if (!exists("app_url"))
+  app_url         <- Sys.getenv("LEARNITGRID_APP_URL",
+                       unset = getOption("learnitgrid.app.url",
+                         "https://github.com/learnitr/learnitgrid"))
+
+if (!exists("web_url"))
+  web_url         <- Sys.getenv("LEARNITGRID_WEB_URL",
+                       unset = getOption("learnitgrid.web.url",
+                         "https://learnitr.github.io/learnitrdoc/"))
+
+if (!exists("mail_domain"))
+  mail_domain      <- Sys.getenv("LEARNITGRID_MAIL_DOMAIN",
+                         unset = getOption("learnitgrid.mail.domain",
+                           "university.edu"))
+
 if (!exists("github_org"))
   github_org      <- Sys.getenv("LEARNITGRID_ORG",
                        unset = getOption("learnitgrid.org",
-                         "learnitgrid-test"))
+                         "learnitr"))
 if (!exists("github_url"))
   github_url      <- paste0("https://github.com/", github_org)
 # TODO: the branch should be deduced from the set name (a branch or a date)
 # ... or use the default branch (note: master is also OK here)
 if (!exists("branch"))
   branch          <- getOption("learnitgrid.branch", "main")
+if (!exists("docs_on_github"))
+  docs_on_github  <- getOption("learnitgrid.docs.on.github", TRUE)
 
 # Some more info about courses (no data by default)
 if (!exists("courses_aliases"))
-  courses_aliases <- NULL   # The aliases in tnhe dropdown box for your courses
+  courses_aliases <- NULL   # The aliases in the dropdown box for your courses
 if (!exists("classroom_urls")) {
   classroom_urls  <- rep("https://classroom.github.com/classrooms/???/", 26L)
   names(classroom_urls) <- LETTERS # Default URLS for classrooms => unknown
@@ -73,16 +93,16 @@ if (!exists("classroom_urls")) {
 # TODO: make these two options in the UI
 # Maximum number of lines to place in content
 if (!exists("max_lines"))
-  max_lines       <- getOption("learnitgrid.maxlines", 20L)
+  max_lines       <- getOption("learnitgrid.maxlines", 30L)
 # This one is nice, but slow => better to leave it FALSE
 if (!exists("default_highlight"))
   default_highlight <- getOption("learnitgrid.highlight", FALSE)
 
 # Default options for get_git_stats()
 if (!exists("exclude_authors"))
-  exclude_authors <- "github-classroom[bot]"
+  exclude_authors <- c("teacher", "github-classroom[bot]")
 if (!exists("git_stats_type"))
-  git_stats_type  <- "all"
+  git_stats_type  <- c("all", "R", "Rmd", "Qmd")
 if (!exists("git_stats_tz"))
   git_stats_tz    <- "UTC" # Your own tz, e.g., "Europe/Paris"
 
@@ -95,9 +115,9 @@ read <- function(file) {
 # Global objects ----------------------------------------------------------
 
 repos_file        <- file_path_check(root_dir, repos_filename)
-repositories      <- suppressMessages(read.csv(repos_file))
+repositories      <- read(repos_file)
 assign_file       <- file_path_check(root_dir, assign_filename)
-assignments       <- suppressMessages(read.csv(assign_file))
+assignments       <- read(assign_file)
 order             <- NULL     # The order for the table by criterion
 
 course_dirs <- fs::dir_ls(base_corr_dir, type = "directory")
@@ -153,14 +173,14 @@ sort_table <- function(x, is_content = attr(x, "is_content")) {
 
 header <- dashboardHeader(
   title =  a("Learnitgrid",
-    href = "https://github.com/SciViews/learnitgrid"),# style = "color:black;"),
+    href = app_url),# style = "color:black;"),
   titleWidth = 350,
   tags$li(a(
-    onclick = "onclick=window.open('https://wp.sciviews.org/')",
+    onclick = paste("onclick=window.open('", web_url, "')"),
     href = NULL, icon("book"), title = "Cours", style = "cursor:pointer;"),
     class = "dropdown"),
   tags$li(a(
-    onclick = "onclick=window.open('https://github.com/BioDataScience-Course')",
+    onclick = paste0("onclick=window.open('", github_url, "')"),
     href = NULL, icon("github"), title = "GitHub", style = "cursor:pointer;"),
     class = "dropdown")
 )
@@ -190,15 +210,15 @@ sidebar <- dashboardSidebar(width = 350,
 body <- dashboardBody(
   #shinybusy::add_busy_spinner(spin = "fading-circle"),
   tags$head(
-    tags$base(target = "_blank"),
-    tags$style(
-        HTML(".shiny-notification {
-             position:fixed;
-             top: calc(50%);
-             left: calc(30%);
-             }
-             "))
-    ),
+    tags$base(target = "_blank") #,
+    #tags$style(
+    #    HTML(".shiny-notification {
+    #         position:fixed;
+    #         top: calc(50%);
+    #         left: calc(30%);
+    #         }
+    #         "))
+  ),
   tabItems(
     tabItem(tabName = "summary",
       tags$h2(icon("calculator"), " Résumé"),
@@ -231,7 +251,7 @@ body <- dashboardBody(
 
     tabItem(tabName = "correction_grid",
       tags$h2(icon("tasks"), " Correction par grille"),
-      h5(textOutput("to_corresct_per_grid")),
+      h5(textOutput("to_correct_per_grid")),
       fluidRow(
         infoBoxOutput("correction_set2"),
         infoBoxOutput("template_link2"),
@@ -306,34 +326,64 @@ shinyServer <- function(input, output, session) {
 
     # https://stackoverflow.com/questions/66262809/how-to-trigger-edit-on-single-click-in-r-shiny-dt-datatable
     # https://stackoverflow.com/questions/54907273/use-tab-to-edit-next-cell-on-dt-table
-    js <- c(
-      "table.on('click', 'td', function() {",
-      "$(this).dblclick();",
-      "});",
-      "table.on('key', function(e, datatable, key, cell, originalEvent){",
-      "  var targetName = originalEvent.target.localName;",
-      "  if(key == 13){",
-      "    if(targetName == 'body'){",
-      "      $(cell.node()).trigger('dblclick.dt');",
-      "    }else if(targetName == 'input'){",
-      "      $(originalEvent.target).trigger('blur');",
-      "    }",
-      "  }",
-      "})",
-      "table.on('keydown', function(e){",
-      "  if(e.target.localName == 'input' && [9,13,37,38,39,40].indexOf(e.keyCode) > -1){",
-      "    $(e.target).trigger('blur');",
-      "  }",
-      "});",
-      "table.on('key-focus', function(e, datatable, cell, originalEvent){",
-      "  var targetName = originalEvent.target.localName;",
-      "  var type = originalEvent.type;",
-      "  if(type == 'keydown' && targetName == 'input'){",
-      "    if([9,37,38,39,40].indexOf(originalEvent.keyCode) > -1){",
-      "      $(cell.node()).trigger('dblclick.dt');",
-      "    }",
-      "  }",
-      "});")
+
+    # === Old version:
+    #js <- c(
+    #  "table.on('click', 'td', function() {",
+    #  "$(this).dblclick();",
+    #  "});",
+    #  "table.on('key', function(e, datatable, key, cell, originalEvent){",
+    #  "  var targetName = originalEvent.target.localName;",
+    #  "  if(key == 13){",
+    #  "    if(targetName == 'body'){",
+    #  "      $(cell.node()).trigger('dblclick.dt');",
+    #  "    }else if(targetName == 'input'){",
+    #  "      $(originalEvent.target).trigger('blur');",
+    #  "    }",
+    #  "  }",
+    #  "})",
+    #  "table.on('keydown', function(e){",
+    #  "  if(e.target.localName == 'input' && [9,13,37,38,39,40].indexOf(e.keyCode) > -1){",
+    #  "    $(e.target).trigger('blur');",
+    #  "  }",
+    #  "});",
+    #  "table.on('key-focus', function(e, datatable, cell, originalEvent){",
+    #  "  var targetName = originalEvent.target.localName;",
+    #  "  var type = originalEvent.type;",
+    #  "  if(type == 'keydown' && targetName == 'input'){",
+    #  "    if([9,37,38,39,40].indexOf(originalEvent.keyCode) > -1){",
+    #  "      $(cell.node()).trigger('dblclick.dt');",
+    #  "    }",
+    #  "  }",
+    #  "});")
+
+    #== New version:
+  #js <- c(
+  #  "correction_table_criterion.on('key',",
+  #  "  function(e, datatable, key, cell, originalEvent){",
+  #  "  var targetName = originalEvent.target.localName;",
+  #  "  if(key == 13 && targetName == 'body'){",
+  #  "    $(cell.node()).trigger('dblclick.dt');",
+  #  "  }",
+  #  "});",
+  #  "correction_table_criterion.on('keydown', function(e){",
+  #  "  var keys = [9,13,37,38,39,40];",
+  #  "  if(e.target.localName == 'input' && keys.indexOf(e.keyCode) > -1){",
+  #  "    $(e.target).trigger('blur');",
+  #  "  }",
+  #  "});",
+  #  "correction_table_criterion.on('key-focus',",
+  #  "  function(e, datatable, cell, originalEvent){",
+  #  "  var targetName = originalEvent.target.localName;",
+  #  "  var type = originalEvent.type;",
+  #  "  if(type == 'keydown' && targetName == 'input'){",
+  #  "    if([9,37,38,39,40].indexOf(originalEvent.keyCode) > -1){",
+  #  "      $(cell.node()).trigger('dblclick.dt');",
+  #  "    }",
+  #  "  }",
+  #  "});"
+  #)
+
 
   #showModal(modal_startup)
 
@@ -507,8 +557,8 @@ shinyServer <- function(input, output, session) {
 
   output$mean <- renderValueBox({
     x <- summary_react()
-    x1 <- round(mean(x$score_20, na.rm = TRUE),1)
-    x2 <- round(median(x$score_20, na.rm = TRUE),1)
+    x1 <- round(mean(x$score_20, na.rm = TRUE), 1)
+    x2 <- round(median(x$score_20, na.rm = TRUE), 1)
     res <- glue::glue("{x1} ({x2})")
     valueBox(res, "Moyenne (Médiane) [/20]", icon = icon("equals"),
       color = "blue")
@@ -516,13 +566,20 @@ shinyServer <- function(input, output, session) {
 
   download <- reactive({
     res <- summary_react()
-    res$email <- paste0(res$student, "@umons.ac.be")
+    res$email <- paste0(res$student, "@", mail_domain)
     res1 <- res[,c("student", "email", "score_20", "file")]
     colnames(res1)[colnames(res1) == "score_20"] <- res$assignment[1]
     res1
   })
 
   output$downloadcsv <- downloadHandler(
+    # TODO: use a more informative name
+    #filename = function() {
+    #  paste0("data-", Sys.Date(), ".csv")
+    #},
+    #content = function(file) {
+    #  write$csv(download(), file)
+    #}
     filename = function() {
       context <- context_react()
       paste0(context$assignment[1],"-summary-", Sys.Date(), ".csv")
@@ -533,6 +590,13 @@ shinyServer <- function(input, output, session) {
   )
 
   output$downloadexcel <- downloadHandler(
+    # TODO: use a more informative name
+    #filename = function() {
+    #  paste0("data-", Sys.Date(), ".xlsx")
+    #},
+    #content = function(file) {
+    #  write$xlsx(download(), file)
+    #}
     filename = function() {
       context <- context_react()
       paste0(context$assignment[1],"-summary-", Sys.Date(), ".xlsx")
@@ -552,10 +616,10 @@ shinyServer <- function(input, output, session) {
     req(input$correction)
     x <- summary_react()
     #x1 <- sum(!(x$missing > 1))
-    x1 <- mean(x$score_20)
-    ggplot2::ggplot(data = x, aes(x = .data$score_20)) +
-      ggplot2::geom_histogram(bins = nrow(x)/2) +
-      ggplot2::geom_vline(xintercept = x1, color = "red", size = 1.5) +
+    x1 <- mean(x$score_20, na.rm = TRUE)
+    ggplot2::ggplot(data = x, ggplot2::aes(x = .data$score_20)) +
+      ggplot2::geom_histogram() + #bins = nrow(x)/2) +
+      ggplot2::geom_vline(xintercept = x1, color = "red", linewidth = 1.5) +
       ggplot2::labs(x = "Note des grilles completées [/20] - moyenne en rouge",
            y = "Dénombrement") +
       cowplot::theme_cowplot()
@@ -574,11 +638,14 @@ shinyServer <- function(input, output, session) {
         colnames = c('Equipe', 'Etudiant', 'Note [/20]','Entrées manquantes'),
         rownames = FALSE,
         selection = "single",
-        options = list(language = list(search = 'Filtrer :'))
+        options = list(
+          pageLength = 100,
+          #language = list(search = 'Filtrer :'))
+          language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/French.json'))
       ),
       "score_20",
       target = "row",
-      backgroundColor = DT::styleEqual(NA, "#FF4500")
+      backgroundColor = DT::styleEqual(NA, "#E3695A") # Was "#FF4500")
     )
   })
 
@@ -594,7 +661,7 @@ shinyServer <- function(input, output, session) {
   git_stats <- reactive({
     context <- context_react()
     #message("Git stats file: ", context$git_dir)
-    res <- get_git_stats(context$git_stats_file, type = input$contri_ext,
+    res <- get_git_stats(context$git_dir, type = input$contri_ext,
       tz = git_stats_tz)
     #res$author_date <- with_tz(
     #  # TODO: generalize this!
@@ -603,69 +670,75 @@ shinyServer <- function(input, output, session) {
     res
   })
 
-  ## selection_grid ----
-  selection_grid <- reactiveVal()
-
-  observeEvent(input$correction, {
-    res <- NULL
-    selection_grid(res)
-    message(glue::glue("
-      reset selection_grid() : {selection_grid()}"))
-  })
-
-  observeEvent(input$summary_tab_rows_selected,{
-    # Collect the selected row
-    info <- input$summary_tab_rows_selected
-    # Use the summary_react table to find the grid
-    res <- collapse::roworder(summary_react(), -missing, score_20)
-    res1 <- res[info,]
-    grid <- paste0(res1$assignment, "-", res1$team)
-
-    # Check that the grid names correspond to the context
-    context <- context_react()
-
-    if (!any(context$repos_names %in% grid)) {
-      if (any(context$repos_names %in% tolower(grid))) {
-        grid <- tolower(grid)
-      } else {
-        grid <- NULL
-      }
-    }
-    # Update selection_grid()
-    selection_grid(grid)
-    # debug test
-    message(glue::glue("
-    #### summary_tab_rows_selected ####
-    The selection_grid : {selection_grid()}
-    The info : {info} "))
-  })
-
-  observeEvent(input$correction_table_criterion_cell_clicked,{
-    # Collect the selected cell
-    info <- input$correction_table_criterion_cell_clicked
-    # Check that the grid names correspond to the context
-    context <- context_react()
-    grid <- context$repos_names[
-        order[info$row]]
-
-    if (!any(context$repos_names %in% grid))
-     grid <- NULL
-
-    # Update selection_grid()
-    selection_grid(grid)
-    # debug test
-    message(glue::glue("
-    #### correction_table_criterion_cell_clicked ####
-    The selection_grid : {selection_grid()}
-    The info : row = {info$row}, col =  {info$col}"))
-  })
-
   observe({
     context <- context_react()
-    selection1 <- selection_grid()
-    updateSelectizeInput(session, 'grid', choices = context$repos_names,
-      selected = selection1)
+    updateSelectizeInput(session, 'grid', choices = context$repos_names)
   })
+
+#  ## selection_grid ----
+#  selection_grid <- reactiveVal()
+#
+#  observeEvent(input$correction, {
+#    res <- NULL
+#    selection_grid(res)
+#    message(glue::glue("
+#      reset selection_grid() : {selection_grid()}"))
+#  })
+#
+#  observeEvent(input$summary_tab_rows_selected,{
+#    # Collect the selected row
+#    info <- input$summary_tab_rows_selected
+#    # Use the summary_react table to find the grid
+#    res <- collapse::roworder(summary_react(), -missing, score_20)
+#    res1 <- res[info,]
+#    grid <- paste0(res1$assignment, "-", res1$team)
+#
+#    # Check that the grid names correspond to the context
+#    context <- context_react()
+#
+#    if (!any(context$repos_names %in% grid)) {
+#      if (any(context$repos_names %in% tolower(grid))) {
+#        grid <- tolower(grid)
+#      } else {
+#        grid <- NULL
+#      }
+#    }
+#    # Update selection_grid()
+#    selection_grid(grid)
+#    # debug test
+#    message(glue::glue("
+#    #### summary_tab_rows_selected ####
+#    The selection_grid : {selection_grid()}
+#    The info : {info} "))
+#  })
+#
+#  observeEvent(input$correction_table_criterion_cell_clicked,{
+#    # Collect the selected cell
+#    info <- input$correction_table_criterion_cell_clicked
+#    # Check that the grid names correspond to the context
+#    context <- context_react()
+#    grid <- context$repos_names[
+#        order[info$row]]
+#
+#    if (!any(context$repos_names %in% grid))
+#     grid <- NULL
+#
+#    # Update selection_grid()
+#    selection_grid(grid)
+#    # debug test
+#    message(glue::glue("
+#    #### correction_table_criterion_cell_clicked ####
+#    The selection_grid : {selection_grid()}
+#    The info : row = {info$row}, col =  {info$col}"))
+#  })
+#
+#  observe({
+#    context <- context_react()
+#    #selection1 <- selection_grid()
+#    #updateSelectizeInput(session, 'grid', choices = context$repos_names,
+#    #  selected = selection1)
+#    updateSelectizeInput(session, 'grid', choices = context$repos_names)
+#  })
 
   #output$contri_plot <- plotly::renderPlotly({
   output$contri_plot <- renderPlot({
@@ -675,62 +748,76 @@ shinyServer <- function(input, output, session) {
 
     if (input$contri_split == "séparer") {
       p <- ggplot2::ggplot(data = stat_red,
-        x = .data$author_date, y = .data$change_cum, col = .data$author)) +
-        ggplot2::facet_wrap(vars(extension)) +
-        ggplot2::geom_step(size = 1, na.rm = TRUE) +
+        ggplot2::aes(x = .data$author_date, y = .data$change_cum,
+          col = .data$author)) +
+        ggplot2::facet_wrap(ggplot2::vars(extension))
     } else {
       p <- ggplot2::ggplot(data = stat_red,
-        aes(x = .data$author_date, y = .data$change_cum, col = .data$author))
+        ggplot2::aes(x = .data$author_date, y = .data$change_cum,
+          col = .data$author))
     }
     p <- p +
-      ggplot2::geom_step(size = 1, na.rm = TRUE) +
+      ggplot2::scale_x_datetime(date_labels = "%d/%m/%Y %H:%M") + #,
+        #date_breaks = "1 hour") +
+      ggplot2::geom_step(linewidth = 1, na.rm = TRUE) +
       ggplot2::geom_point(na.rm = TRUE) +
-      ggplot2::theme(legend.position = "bottom") +
-      ggplot2::labs(x = "Temps", y = "Somme cumulée des lignes modifiés par projet", color = "Auteur") +
-      cowplot::theme_cowplot()
+      cowplot::theme_cowplot() +
+      #ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90),
+      #  legend.position = "bottom") +
+      ggplot2::labs(x     = "Temps",
+                    y     = "Sommes cumulées des lignes modifiées",
+                    color = "Auteur")
 
-    assign_infos <- context$assign_infos
-    assign_time <- c(start = assign_infos$start[1], end = assign_infos$end[1])
+    # This does not work weel -> commented out for now
+    #assign_infos <- context$assign_infos
+    #assign_time <- c(start = assign_infos$start[1], end = assign_infos$end[1])
+    #assign_time <- as.POSIXct(assign_time, tz = git_stats_tz)
 
-    if (length(assign_time) == 2) {
-      stat_time <- c(
-        start = min(stat_red$author_date),
-        end   = max(stat_red$author_date))
-      plot_range <- range(c(assign_time,
-        min(stat_red$author_date),
-        max(stat_red$author_date)))
-      p <- p +
-        ggplot2::geom_vline(xintercept = assign_time,
-          linetype = 4, alpha = 0.8) +
-        ggplot2::xlim(plot_range) +
-        ggplot2::labs(caption =
-        "Chaque point représente un commit. Les lignes verticales représentent le début et la fin de l'exercice.")
-    }
+    #if (length(assign_time) == 2 && !is.na(assign_time[1]) &&
+    #  !is.na(assign_time[2])) {
+    #  stat_time <- c(
+    #    start = min(stat_red$author_date),
+    #    end   = max(stat_red$author_date))
+    #  plot_range <- range(c(assign_time,
+    #    min(stat_red$author_date),
+    #    max(stat_red$author_date)))
+    #  p <- p +
+    #    ggplot2::geom_vline(xintercept = assign_time,
+    #      linetype = 4, alpha = 0.8) +
+    #    ggplot2::xlim(plot_range) +
+    #    ggplot2::labs(caption =
+    #    "Chaque point représente un commit. Les lignes verticales représentent le début et la fin de l'exercice.")
+    #}
 
     p
     #plotly::ggplotly(p)
   })
 
-  correction_table_grid_react <- reactive({
-      req(input$grid)
-      context <- context_react()
-
-      populate_table(items = "all", grids = input$grid, context = context,
-          reorder = FALSE, highlight = input$highlight, max_lines = max_lines)
-    })
+  #correction_table_grid_react <- reactive({
+  #    req(input$grid)
+  #    context <- context_react()
+  #
+  #    populate_table(items = "all", grids = input$grid, context = context,
+  #        reorder = FALSE, highlight = input$highlight, max_lines = max_lines,
+  #        on_github = docs_on_github)
+  #  })
 
   output$correction_table_grid <- DT::renderDataTable({
     req(input$grid)
+    context <- context_react()
 
     DT::formatStyle(
       DT::datatable(
-        correction_table_grid_react(),
+        #correction_table_grid_react(),
+        populate_table(items = "all", grids = input$grid, context = context,
+          reorder = FALSE, highlight = input$highlight, max_lines = max_lines,
+          on_github = docs_on_github),
         colnames = c('Max', 'Score&nbsp;Commentaire', 'Critère',  'Contenu',
           'Graphique', 'Liens', 'Evaluateur', 'Étudiant/groupe'),
         rownames = FALSE,
         selection = "none",
         escape = FALSE,
-        callback = DT::JS(js),
+        #callback = DT::JS(js),
         extensions = c("Buttons", "KeyTable"),
         options = list(
           keys = TRUE,
@@ -741,7 +828,10 @@ shinyServer <- function(input, output, session) {
           autoFill = TRUE,
           ordering = FALSE,
           dom = 'Bfrtip',
-          buttons = c('csv', 'excel'),
+          #buttons = c('csv', 'excel'),
+          buttons = list(
+            list(extend = 'csv',   filename =  input$grid),
+            list(extend = 'excel', filename =  input$grid)),
           language = list(search = 'Filtrer :'),
           columnDefs = list(
             list(width = '300px', targets = 1),  # score_comment
@@ -764,66 +854,78 @@ shinyServer <- function(input, output, session) {
   output$template_link3 <- renderInfoBox({template_link()})
 
   output$evaluator_name3 <- renderInfoBox({evaluator_name()})
-  ## Select the criterion
-
-  selection_criterion <- reactiveVal()
-
-  observeEvent(input$correction, {
-    res <- NULL
-    selection_criterion(res)
-  })
-
-  observeEvent(input$correction_table_grid_cell_clicked,{
-    # Collect the selected cell
-    info <- input$correction_table_grid_cell_clicked
-    # Check that the criterion correspond to the context
-    context <- context_react()
-
-    res <- NULL
-
-    if (!is.null(info$row)) {
-     x <- correction_table_grid_react()[info$row, ]
-     res <- x$criterion
-    }
-
-    if (!any(context$templ_corrs$criterion %in% res))
-      res <- NULL
-    # Update selection_grid()
-    selection_criterion(res)
-    # Message info
-    message(glue::glue("
-    #### correction_table_grid_cell_clicked ####
-    The selection_grid : {selection_criterion()}
-    The info : row = {info$row}, col =  {info$col}"))
-  })
 
   observe({
     context <- context_react()
-    selection1 <- selection_criterion()
     updateSelectizeInput(session, 'item',
-      choices = context$templ_corrs$criterion,
-      selected = selection1)
+      choices = context$templ_corrs$criterion)
   })
 
-  correction_table_criterion_react <- reactive({
+#  ## Select the criterion
+#  selection_criterion <- reactiveVal()
+#
+#  observeEvent(input$correction, {
+#    res <- NULL
+#    selection_criterion(res)
+#  })
+#
+#  observeEvent(input$correction_table_grid_cell_clicked,{
+#    # Collect the selected cell
+#    info <- input$correction_table_grid_cell_clicked
+#    # Check that the criterion correspond to the context
+#    context <- context_react()
+#
+#    res <- NULL
+#
+#    if (!is.null(info$row)) {
+#     x <- correction_table_grid_react()[info$row, ]
+#     res <- x$criterion
+#    }
+#
+#    if (!any(context$templ_corrs$criterion %in% res))
+#      res <- NULL
+#    # Update selection_grid()
+#    selection_criterion(res)
+#    # Message info
+#    message(glue::glue("
+#    #### correction_table_grid_cell_clicked ####
+#    The selection_grid : {selection_criterion()}
+#    The info : row = {info$row}, col =  {info$col}"))
+#  })
+#
+#  observe({
+#    context <- context_react()
+#    selection1 <- selection_criterion()
+#    updateSelectizeInput(session, 'item',
+#      choices = context$templ_corrs$criterion,
+#      selected = selection1)
+#  })
+#
+#  correction_table_criterion_react <- reactive({
+#    req(input$item)
+#    context <- context_react()
+#
+#    sort_table(populate_table(items = input$item, grids = "all",
+#          context = context, reorder = TRUE, highlight = input$highlight,
+#          max_lines = max_lines, on_github = docs_on_github))
+#  })
+
+  output$correction_table_criterion <- DT::renderDataTable({
     req(input$item)
     context <- context_react()
 
-    sort_table(populate_table(items = input$item, grids = "all",
-          context = context, reorder = TRUE, highlight = input$highlight,
-          max_lines = max_lines))
-  })
-
-  output$correction_table_criterion <- DT::renderDataTable({
     DT::formatStyle(
       DT::datatable(
-        correction_table_criterion_react(),
+        #correction_table_criterion_react(),
+        sort_table(populate_table(items = input$item, grids = "all",
+          context = context, reorder = TRUE, highlight = input$highlight,
+          max_lines = max_lines, on_github = docs_on_github)),
         colnames = c('Max', 'Score&nbsp;Commentaire', 'Critère', 'Contenu',
           'Graphique', 'Liens', 'Evaluateur', 'Étudiant/groupe'),
         rownames = FALSE,
         selection = "none",
         escape = FALSE,
-        callback = DT::JS(js),
+        #callback = DT::JS(js),
         extensions = c("Buttons", "KeyTable"),
         options = list(
           keys = TRUE,
@@ -834,7 +936,12 @@ shinyServer <- function(input, output, session) {
           autoFill = TRUE,
           ordering = FALSE,
           dom = 'Bfrtip',
-          buttons = c('csv', 'excel'),
+          #buttons = c('csv', 'excel'),
+          buttons = list(
+            list(extend = 'csv',
+              filename =  paste0(context$assignment[1], "-", input$item)),
+            list(extend = 'excel',
+              filename =  paste0(context$assignment[1], "-", input$item))),
           language = list(search = 'Filtrer :'),
           columnDefs = list(
             list(width = '300px', targets = 1), # score_comment
@@ -894,7 +1001,7 @@ shinyServer <- function(input, output, session) {
         order[input$correction_table_criterion_cell_edit$row]]
       # Read it
       message("Changing ", corr_file, " rubric...")
-      corrs <- suppressMessages(read.csv(corr_file))
+      corrs <- read(corr_file)
       # Make sure columns score, evaluator and comment are the right type
       corrs$score <- as.numeric(corrs$score)
       corrs$evaluator <- as.character(corrs$evaluator)
@@ -945,7 +1052,8 @@ shinyServer <- function(input, output, session) {
             corrs[pos, "score"] <- num_score
             corrs[pos, "comment"] <- comment
             corrs[pos, "evaluator"] <- input$evaluator
-            data.io::write$csv(corrs, corr_file)
+            #data.io::write$csv(corrs, corr_file)
+            write.csv(corrs, corr_file, row.names = FALSE)
           }
         } else {# !is_ok
           msg <- paste0("ERROR: score '", score,
@@ -979,7 +1087,7 @@ shinyServer <- function(input, output, session) {
         corr_file <- context$corr_files[corr_pos]
         message("Changing ", corr_file, " rubric...")
         # Read it
-        corrs <- suppressMessages(read.csv(corr_file))
+        corrs <- read(corr_file)
         # Make sure columns score, evaluator and comment are the right type
         corrs$score <- as.numeric(corrs$score)
         corrs$evaluator <- as.character(corrs$evaluator)
@@ -1023,6 +1131,7 @@ shinyServer <- function(input, output, session) {
             corrs[pos, "score"] <- num_score
             corrs[pos, "comment"] <- comment
             corrs[pos, "evaluator"] <- input$evaluator
+            #data.io::write$csv(corrs, corr_file)
             write.csv(corrs, corr_file, row.names = FALSE)
           }
         } else {# !is_ok

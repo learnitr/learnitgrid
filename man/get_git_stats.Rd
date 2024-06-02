@@ -5,14 +5,14 @@
 \title{Summarize the git stats for one or more git repositories}
 \usage{
 get_git_stats(
-  git_stats_file,
+  dir,
   exclude_authors = "github-classroom[bot]",
   type = "all",
   tz = "UTC"
 )
 }
 \arguments{
-\item{git_stats_file}{The path the the git_stats.csv file}
+\item{dir}{The path the the git_stats.csv file}
 
 \item{exclude_authors}{The list of authors to exclude from the stats}
 
