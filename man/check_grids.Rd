@@ -18,6 +18,6 @@ A data frame with the results of the evaluation grids check for the
 learnitgrid Shiny app.
 }
 \description{
-This function checks all evaluation grids in a correction set and computes
+Check all evaluation grids in a correction set and computes
 the required statistics for the summary page of the learnitgrid shiny app.
 }

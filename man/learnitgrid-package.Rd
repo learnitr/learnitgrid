@@ -18,9 +18,8 @@ them to GitHub (classroom) so that they are evaluated using the rubric
 \section{Important functions}{
 
 \itemize{
-\item \code{\link[=create_context]{create_context()}} creates a context object (a list) with ...
-\item \code{\link[=populate_table]{populate_table()}} computes the content for a \code{DT::datatable()} with the
-evaluation grid information.
+\item \code{\link[=install_grid_example]{install_grid_example()}} decompress an example dataset.
+\item \code{\link[=run_grid]{run_grid()}} run the learnitgrid Shiny application.
 }
 }
 

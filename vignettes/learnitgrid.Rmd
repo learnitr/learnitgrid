@@ -18,8 +18,30 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+The {learnitgrid} package implements an application to ease the correction of projects where students have to complete R scripts, R Markdown or Quarto documents. The correction is done by using evaluation grids (or rubrics).
+
+The application is started with `run_grid()`. You have to provide the directory where the data is stored (with subdirectories for `templates`, `repos` and `corrections`, TODO: detailed explanations of the data structure).
+
+If you do not provide any directory, a small package example is used with `run_grid("")`. No R Markdown document is provided in this example. So, you can only see the evaluation grid, but not the items that are evaluated.
+
+You can also install a larger example dataset in your temporary directory and inspect it to see how you have to organize your data:
+
+```{r install_example, eval=FALSE}
 library(learnitgrid)
+# Decompress the example dataset in a temporary directory and inspect it
+install_grid_example(browse = TRUE)
 ```
 
-TODO...
+The path to these data is set in the "learnitgrid.data.dir" option. You read it with:
+
+```{r option, eval=FALSE}
+getOption("learnitgrid.data.dir")
+```
+
+Finally, you start the learnitgrid Shiny application with:
+
+```{r start_app, eval=FALSE}
+run_grid()
+```
+
+Of course, you are supposed to use it with your own data. The provided examples allow to play with the app and get used to its interface.

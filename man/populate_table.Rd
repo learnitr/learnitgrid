@@ -39,7 +39,6 @@ local files (default is \code{TRUE})?}
 A data frame with the content to be displayed in a DT::datatable object.
 }
 \description{
-The most important function for the learnitgrid Shiny app to fill in the
-table according to selected items with a list of grids (or "all") or
-according to a selected grid with a list of items (or "all")
+Populate a DT table according to selected items with a list of grids (or
+"all") or according to a selected grid with a list of items (or "all")
 }

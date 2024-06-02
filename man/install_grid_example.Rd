@@ -2,7 +2,7 @@
 % Please edit documentation in R/install_grid_example.R
 \name{install_grid_example}
 \alias{install_grid_example}
-\title{Install and extended example dataset to try the learnitgrid Shiny application}
+\title{Install an extended example dataset to try the learnitgrid Shiny application}
 \usage{
 install_grid_example(dir = tempdir(), browse = FALSE)
 }
@@ -15,7 +15,7 @@ install_grid_example(dir = tempdir(), browse = FALSE)
 The path to the example learnitgrid data is returned invisibly.
 }
 \description{
-Install and extended example dataset to try the learnitgrid Shiny application
+Install an extended example dataset to try the learnitgrid Shiny application
 }
 \examples{
 # Install the extended examples in a temporary directory

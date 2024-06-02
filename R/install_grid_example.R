@@ -1,4 +1,4 @@
-#' Install and extended example dataset to try the learnitgrid Shiny application
+#' Install an extended example dataset to try the learnitgrid Shiny application
 #'
 #' @param dir The directory where to decompress the extended example
 #' @param browse Should we browse the example directory after decompression?

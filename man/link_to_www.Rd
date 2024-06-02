@@ -16,7 +16,7 @@ www_relative(path)
 }
 \value{
 \code{TRUE} if the symbolic link exists for \code{\link[=link_to_www]{link_to_www()}} or \code{FALSE}
-otherwise. The modified path is returned by\code{\link[=www_relative]{www_relative()}}
+otherwise. The modified path is returned by \code{\link[=www_relative]{www_relative()}}
 }
 \description{
 Symbolic links in the www subdirectory of the Shiny app are

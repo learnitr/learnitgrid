@@ -14,7 +14,7 @@
 #' Summarize and check evaluation grids for the learnitgrid Shiny app
 #'
 #' @description
-#' This function checks all evaluation grids in a correction set and computes
+#' Check all evaluation grids in a correction set and computes
 #' the required statistics for the summary page of the learnitgrid shiny app.
 #'
 #' @param dir The path to the evaluation grids

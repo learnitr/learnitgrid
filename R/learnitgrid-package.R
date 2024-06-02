@@ -7,10 +7,9 @@
 #'
 #' @section Important functions:
 #'
-#' - [create_context()] creates a context object (a list) with ...
+#' - [install_grid_example()] decompress an example dataset.
 #'
-#' - [populate_table()] computes the content for a `DT::datatable()` with the
-#'   evaluation grid information.
+#' - [run_grid()] run the learnitgrid Shiny application.
 #'
 #' @keywords internal
 "_PACKAGE"

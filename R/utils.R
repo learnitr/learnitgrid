@@ -98,7 +98,7 @@ correct_rmd <- function(rmd) {
 #' @param link The name to use for the symbolic link under the www subdirectory of the Shiny app.
 #'
 #' @return `TRUE` if the symbolic link exists for [link_to_www()] or `FALSE`
-#' otherwise. The modified path is returned by[www_relative()]
+#' otherwise. The modified path is returned by [www_relative()]
 #' @export
 link_to_www <- function(path, link) {
   link_path <- path("www", link)

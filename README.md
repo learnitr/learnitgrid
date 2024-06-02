@@ -23,17 +23,18 @@ This package is associated with and enhances the {learnitdown} package.
 You can install the development version of {learnitgrid} from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("remotes")
+#install.packages("remotes")
 remotes::install_github("learnitr/learnitgrid")
 ```
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+An example dataset with anonymized data providing from three assignments is included in the package. The dataset is compressed, but it can be easily uncompressed using `install_grid_example()`. Then, `run_grid()` starts the learnitgrid Shiny application.
 
 ``` r
 library(learnitgrid)
-## basic example code
+install_grid_example()
+run_grid()
 ```
 
 # Code of Conduct
