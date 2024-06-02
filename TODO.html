@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">learnitgrid</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
       </span>
     </div>
 
@@ -51,8 +51,25 @@
 
 <div id="learnitgrid---to-do-list" class="section level1">
 
-<ul><li>…</li>
-</ul></div>
+<ul><li><p>Doc: a man page that explains how data are organized.</p></li>
+<li><p>App: cell edition without requiring double-click first and enter at the end</p></li>
+<li><p>App: either access to local files (IDE) or the mongodb server (RSConnect) and possibly use (<a href="https://solutions.posit.co/connections/db/r-packages/pool/" class="external-link uri">https://solutions.posit.co/connections/db/r-packages/pool/</a>)</p></li>
+<li><p>App: use the {config} package to specify the way data is retrieved, depending if the Shiny application is run locally or on RSConnect, see <a href="https://solutions.posit.co/connections/db/best-practices/deployment/" class="external-link uri">https://solutions.posit.co/connections/db/best-practices/deployment/</a></p></li>
+<li><p>App: using a database connection in Shiny, use onStop() event to disconnect or onSessionEnded() for a per session disconnection.</p></li>
+<li><p>App: use a cache of the date for faster execution, but react to file changes using something like a reactivePoll, e.g.:</p></li>
+</ul><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">reactivePoll</span><span class="op">(</span><span class="fl">1000</span>, <span class="va">session</span>,</span>
+<span>    <span class="co"># This function returns the time that log_file was last modified</span></span>
+<span>    checkFunc <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">log_file</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/file.info.html" class="external-link">file.info</a></span><span class="op">(</span><span class="va">log_file</span><span class="op">)</span><span class="op">$</span><span class="va">mtime</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="kw">else</span> <span class="st">""</span></span>
+<span>    <span class="op">}</span>,</span>
+<span>    <span class="co"># This function returns the content of log_file</span></span>
+<span>    valueFunc <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">log_file</span><span class="op">)</span> <span class="op">}</span></span>
+<span>  <span class="op">)</span></span>
+<span>  <span class="va">output</span><span class="op">$</span><span class="va">dataTable</span> <span class="op">&lt;-</span> <span class="fu">renderTable</span><span class="op">(</span><span class="op">{</span> <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="op">)</span> <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+</div>
 
   </div>
 
