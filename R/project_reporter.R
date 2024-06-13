@@ -1,6 +1,6 @@
-#' Create a {testthat} reporter suitable to test projects
+#' Create a testthat reporter suitable to test projects
 #'
-#' @return A {testthat} reporter
+#' @return A testthat reporter
 #' @export
 project_reporter <- function() {
   # These variables are there to avoiding R CMD check to choke

@@ -1,4 +1,4 @@
-#' Functions to be used in {testthat} test of the project
+#' Functions to be used in testthat test of the project
 #'
 #' @param name The name of the result and reference files
 #' @param part The part(s) (list item(s)) to co=pare

@@ -1,7 +1,7 @@
 #' Test a project directory, possibly limit the number of uses
 #'
 #' @param path The path to test
-#' @param reporter The {testthat} reporter to use
+#' @param reporter The testthat reporter to use
 #' @param times The maximum number of times the tests can be run by the end-user
 #' @param ... Additional arguments to pass to [testthat::test_dir()]
 #'

@@ -3,7 +3,7 @@
 #' @description
 #' A simple multiple choice system in a R chunk, compatible with git and R
 #' Markdown or Quarto documents. `obfuscate()` and `get_word()` are used to hide
-#' correct answers in the {testthat} tests.
+#' correct answers in the testthat tests.
 #'
 #' @param x A String with the different answers, starting with []. The user has
 #' to "check" the correct items by adding 'x' or 'X' inside the brackets
