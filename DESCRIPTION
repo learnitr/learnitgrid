@@ -53,7 +53,7 @@ Suggests:
     knitr,
     rmarkdown,
     spelling
-remotes:
+Remotes:
     SciViews/data.io,
     SciViews/svMisc
 License: MIT + file LICENSE
