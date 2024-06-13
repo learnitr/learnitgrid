@@ -1,3 +1,7 @@
+# learnitgrid 0.9.0
+
+-   Functions required to run projects and test that are added.
+
 # learnitgrid 0.8.0
 
 -   An extended example dataset is added (compressed in the package, but can be easily uncompressed using `install_example()`).
