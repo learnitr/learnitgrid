@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">learnitgrid</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
       </span>
     </div>
 
@@ -62,6 +62,10 @@
         </td>
         <td><p>Make proper Rmd/Qmd chunk labels from strings for parsermd::parse_rmd()</p></td>
       </tr><tr><td>
+          <p><code><a href="copy_cache.html">copy_cache()</a></code> <code><a href="copy_cache.html">CC()</a></code> </p>
+        </td>
+        <td><p>Copy data cache from a reference folder into an RStudio project</p></td>
+      </tr><tr><td>
           <p><code><a href="correct_rmd.html">correct_rmd()</a></code> </p>
         </td>
         <td><p>Make sure that Rmd/Qmd chunk labels are written without spaces</p></td>
@@ -70,29 +74,77 @@
         </td>
         <td><p>Create a context object for a correction set</p></td>
       </tr><tr><td>
+          <p><code><a href="df_structure.html">df_structure()</a></code> <code><a href="df_structure.html">digest()</a></code> <code><a href="df_structure.html">object_attr()</a></code> <code><a href="df_structure.html">object_part()</a></code> <code><a href="df_structure.html">object_str()</a></code> </p>
+        </td>
+        <td><p>Transformation functions for creating reference or result objects for testing progress of the students in their project.</p></td>
+      </tr><tr><td>
           <p><code><a href="dir_path_create.html">dir_path_create()</a></code> <code><a href="dir_path_create.html">dir_path_check()</a></code> <code><a href="dir_path_create.html">file_path_check()</a></code> </p>
         </td>
         <td><p>Make sure a directory exists, or create it</p></td>
+      </tr><tr><td>
+          <p><code><a href="encrypt_solutions.html">encrypt_solutions()</a></code> <code><a href="encrypt_solutions.html">decrypt_solutions()</a></code> <code><a href="encrypt_solutions.html">set_key()</a></code> </p>
+        </td>
+        <td><p>Encrypt solution files into <code>..._solution.xxx.aes</code> files</p></td>
       </tr><tr><td>
           <p><code><a href="get_git_stats.html">get_git_stats()</a></code> </p>
         </td>
         <td><p>Summarize the git stats for one or more git repositories</p></td>
       </tr><tr><td>
+          <p><code><a href="hook_last_chunk.html">hook_last_chunk()</a></code> </p>
+        </td>
+        <td><p>Configure Knitr to generate a .Last.chunk object</p></td>
+      </tr><tr><td>
           <p><code><a href="install_grid_example.html">install_grid_example()</a></code> </p>
         </td>
         <td><p>Install an extended example dataset to try the learnitgrid Shiny application</p></td>
+      </tr><tr><td>
+          <p><code><a href="is_identical_to_ref.html">is_identical_to_ref()</a></code> <code><a href="is_identical_to_ref.html">is_equal_to_ref()</a></code> <code><a href="is_identical_to_ref.html">is_rendered()</a></code> <code><a href="is_identical_to_ref.html">is_rendered_current()</a></code> <code><a href="is_identical_to_ref.html">is_data()</a></code> <code><a href="is_identical_to_ref.html">is_data_df()</a></code> <code><a href="is_identical_to_ref.html">has_labels_all()</a></code> <code><a href="is_identical_to_ref.html">has_labels_any()</a></code> <code><a href="is_identical_to_ref.html">has_units_all()</a></code> <code><a href="is_identical_to_ref.html">has_units_any()</a></code> <code><a href="is_identical_to_ref.html">is_display_equation()</a></code> <code><a href="is_identical_to_ref.html">is_display_param_equation()</a></code> <code><a href="is_identical_to_ref.html">is_inline_equation()</a></code> <code><a href="is_identical_to_ref.html">is_inline_param_equation()</a></code> </p>
+        </td>
+        <td><p>Functions to be used in testthat test of the project</p></td>
       </tr><tr><td>
           <p><code><a href="link_to_www.html">link_to_www()</a></code> <code><a href="link_to_www.html">www_relative()</a></code> </p>
         </td>
         <td><p>Create symbolic links under www subdirectory or strip www subdirectory from the path</p></td>
       </tr><tr><td>
+          <p><code><a href="make_ref.html">make_ref()</a></code> <code><a href="make_ref.html">read_ref()</a></code> </p>
+        </td>
+        <td><p>Create or read reference files for tests</p></td>
+      </tr><tr><td>
+          <p><code><a href="make_test.html">make_test()</a></code> <code><a href="make_test.html">make_clean()</a></code> <code><a href="make_test.html">make_original()</a></code> <code><a href="make_test.html">make_solution()</a></code> <code><a href="make_test.html">make_prepare()</a></code> </p>
+        </td>
+        <td><p>Run action of a MAKEFILE from R</p></td>
+      </tr><tr><td>
           <p><code><a href="populate_table.html">populate_table()</a></code> </p>
         </td>
         <td><p>Computes the content of a DT::datatable for a correction set</p></td>
       </tr><tr><td>
+          <p><code><a href="prepare_files.html">prepare_files()</a></code> </p>
+        </td>
+        <td><p>Prepare files for original or solution version</p></td>
+      </tr><tr><td>
+          <p><code><a href="project_reporter.html">project_reporter()</a></code> </p>
+        </td>
+        <td><p>Create a testthat reporter suitable to test projects</p></td>
+      </tr><tr><td>
+          <p><code><a href="record_res.html">record_res()</a></code> <code><a href="record_res.html">read_res()</a></code> <code><a href="record_res.html">write_res()</a></code> <code><a href="record_res.html">RO()</a></code> <code><a href="record_res.html">RN()</a></code> <code><a href="record_res.html">RODFS()</a></code> <code><a href="record_res.html">RNDFS()</a></code> <code><a href="record_res.html">ROMD5()</a></code> <code><a href="record_res.html">RNMD5()</a></code> <code><a href="record_res.html">ROP()</a></code> <code><a href="record_res.html">RNP()</a></code> <code><a href="record_res.html">ROA()</a></code> <code><a href="record_res.html">RNA()</a></code> <code><a href="record_res.html">ROSTR()</a></code> <code><a href="record_res.html">RNSTR()</a></code> </p>
+        </td>
+        <td><p>Record, read and write results that capture given characteristics of an object</p></td>
+      </tr><tr><td>
           <p><code><a href="run_grid.html">run_grid()</a></code> </p>
         </td>
         <td><p>Run the learnitgrid Shiny application</p></td>
+      </tr><tr><td>
+          <p><code><a href="select_answer.html">select_answer()</a></code> <code><a href="select_answer.html">obfuscate()</a></code> <code><a href="select_answer.html">get_word()</a></code> </p>
+        </td>
+        <td><p>A simple multiple choice system in a R chunk, compatible with git and R Markdown or Quarto documents</p></td>
+      </tr><tr><td>
+          <p><code><a href="switch_to_original.html">switch_to_original()</a></code> <code><a href="switch_to_original.html">switch_to_solution()</a></code> <code><a href="switch_to_original.html">switch_to_last_saved()</a></code> <code><a href="switch_to_original.html">save_as_original()</a></code> <code><a href="switch_to_original.html">save_as_solution()</a></code> </p>
+        </td>
+        <td><p>Switch to a given version of the document or save such a version</p></td>
+      </tr><tr><td>
+          <p><code><a href="test_dir.html">test_dir()</a></code> </p>
+        </td>
+        <td><p>Test a project directory, possibly limit the number of uses</p></td>
       </tr></tbody></table></div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
