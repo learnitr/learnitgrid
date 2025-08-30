@@ -57,7 +57,7 @@ is_equal_to_ref <- function(name, part = NULL, attr = NULL) {
 #' @param format The format of the rendered file. For `is_rendered()` or `is_rendered_current()` it is `"html'` by default. For the other function, the default is `"rds"`
 is_rendered <- function(quarto, format = "html") {
   rendered <- sub("\\.[qR]md$", paste0(".", format), quarto)
-  rendered_path <- here::here(rendered)
+  rendered_path <- fs::path(rprojroot::find_package_root_file(), rendered)
   fs::file_exists(rendered_path)
 }
 
@@ -66,8 +66,8 @@ is_rendered <- function(quarto, format = "html") {
 #' @rdname is_identical_to_ref
 is_rendered_current <- function(quarto, format = "html") {
   rendered <- sub("\\.[qR]md$", paste0(".", format), quarto)
-  quarto_path <- here::here(quarto)
-  rendered_path <- here::here(rendered)
+  quarto_path <- fs::path(rprojroot::find_package_root_file(), quarto)
+  rendered_path <- fs::path(rprojroot::find_package_root_file(), rendered)
   fs::file_exists(rendered_path) &&
     file.mtime(rendered_path) >= file.mtime(quarto_path)
 }
@@ -78,7 +78,8 @@ is_rendered_current <- function(quarto, format = "html") {
 #' @param dir The subdirectory in the package where to look for (`"data"` by default)
 #' @param check_df Check if the data file contains a data frame
 is_data <- function(name, dir = "data", format = "rds", check_df = FALSE) {
-  data_path <- here::here(dir, paste(name, format, sep = "."))
+  data_path <- fs::path(rprojroot::find_package_root_file(), dir,
+    paste(name, format, sep = "."))
   res <- fs::file_exists(data_path)
   if (!res)
     return(structure(FALSE, message = paste0("The data file ", data_path,

@@ -15,7 +15,7 @@
 \alias{is_display_param_equation}
 \alias{is_inline_equation}
 \alias{is_inline_param_equation}
-\title{Functions to be used in {testthat} test of the project}
+\title{Functions to be used in testthat test of the project}
 \usage{
 is_identical_to_ref(name, part = NULL, attr = NULL)
 
@@ -68,5 +68,5 @@ is_inline_param_equation(text, object)
 \code{TRUE} if the result is identical to the reference, \code{FALSE} otherwise
 }
 \description{
-Functions to be used in {testthat} test of the project
+Functions to be used in testthat test of the project
 }

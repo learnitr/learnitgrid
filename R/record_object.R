@@ -30,7 +30,8 @@
 #' @export
 # The main function to put a result in /tests/results
 record_res <- function(object = ".Last.chunk", name = object,
-    fun = NULL, ..., dir = here::here("tests", "results"),
+    fun = NULL, ...,
+    dir = fs::path(rprojroot::find_package_root_file(), "tests", "results"),
     env = parent.frame()) {
   data <- get0(object, envir = env)
   if (is.null(data))
@@ -45,14 +46,16 @@ record_res <- function(object = ".Last.chunk", name = object,
 
 #' @export
 #' @rdname record_res
-read_res <- function(name, ..., dir = here::here("tests", "results"),
+read_res <- function(name, ...,
+    dir = fs::path(rprojroot::find_package_root_file(), "tests", "results"),
     nthreads = parallel::detectCores(logical = FALSE)) {
   qs::qread(fs::path(dir, name), nthreads = nthreads, ...)
 }
 
 #' @export
 #' @rdname record_res
-write_res <- function(object, name, ..., dir = here::here("tests", "results"),
+write_res <- function(object, name, ...,
+    dir = fs::path(rprojroot::find_package_root_file(), "tests", "results"),
     nthreads = parallel::detectCores(logical = FALSE)) {
   fs::dir_create(dir)
   qs::qsave(object, file = fs::path(dir, name), nthreads = nthreads, ...)

@@ -15,8 +15,9 @@
 #' @export
 encrypt_solutions <- function(key = NULL, error = TRUE) {
   # Get a list of solution files
-  files <- fs::dir_ls(here::here(), all = TRUE, recurse = TRUE,
-    type = "file", regexp = "_solution\\.[a-zA-Z0-9]+$")
+  files <- fs::dir_ls(rprojroot::find_package_root_file(),
+    all = TRUE, recurse = TRUE, type = "file",
+    regexp = "_solution\\.[a-zA-Z0-9]+$")
   if (!length(files)) {
     if (isTRUE(error)) {
       stop("No solution files found")
@@ -43,8 +44,9 @@ encrypt_solutions <- function(key = NULL, error = TRUE) {
 #' @rdname encrypt_solutions
 decrypt_solutions <- function(key = NULL, error = TRUE) {
   # Get a list of encrypted solution files
-  enc_files <- fs::dir_ls(here::here(), all = TRUE, recurse = TRUE,
-    type = "file", regexp = "_solution\\.[a-zA-Z0-9]+.aes$")
+  enc_files <- fs::dir_ls(rprojroot::find_package_root_file(),
+    all = TRUE, recurse = TRUE, type = "file",
+    regexp = "_solution\\.[a-zA-Z0-9]+.aes$")
   if (!length(enc_files)) {
     if (isTRUE(error)) {
       stop("No encoded solution files found")
@@ -71,7 +73,7 @@ decrypt_solutions <- function(key = NULL, error = TRUE) {
 #' @rdname encrypt_solutions
 set_key <- function() {
   # Try first to retrieve it from a file
-  key_file <- here::here("tests/.key")
+  key_file <- fs::path(rprojroot::find_package_root_file(), "tests", ".key")
   if (fs::file_exists(key_file))
     return(qs::qread(key_file))
   pass <- askpass::askpass("Veuillez entrer le mode de passe :")

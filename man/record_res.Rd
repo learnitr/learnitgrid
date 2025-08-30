@@ -23,14 +23,14 @@ record_res(
   name = object,
   fun = NULL,
   ...,
-  dir = here::here("tests", "results"),
+  dir = fs::path(rprojroot::find_package_root_file(), "tests", "results"),
   env = parent.frame()
 )
 
 read_res(
   name,
   ...,
-  dir = here::here("tests", "results"),
+  dir = fs::path(rprojroot::find_package_root_file(), "tests", "results"),
   nthreads = parallel::detectCores(logical = FALSE)
 )
 
@@ -38,7 +38,7 @@ write_res(
   object,
   name,
   ...,
-  dir = here::here("tests", "results"),
+  dir = fs::path(rprojroot::find_package_root_file(), "tests", "results"),
   nthreads = parallel::detectCores(logical = FALSE)
 )
 
@@ -47,7 +47,7 @@ RO(
   name = object,
   fun = NULL,
   ...,
-  dir = here::here("tests", "results"),
+  dir = fs::path(rprojroot::find_package_root_file(), "tests", "results"),
   env = parent.frame()
 )
 

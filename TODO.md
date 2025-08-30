@@ -1,5 +1,7 @@
 # learnitgrid - To Do list
 
+-   Switch to qs2 and drop qs.
+
 -   Doc: a man page that explains how data are organized.
 
 -   App: cell edition without requiring double-click first and enter at the end

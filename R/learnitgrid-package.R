@@ -22,7 +22,7 @@
 #' @importFrom digest digest
 #' @importFrom gh gh gh_whoami
 #' @importFrom glue glue
-#' @importFrom here here
+#' @importFrom rprojroot find_package_root_file
 #' @importFrom fs path dir_create dir_exists dir_ls file_exists link_create link_delete link_exists
 #' @importFrom collapse fcumsum GRP roworder
 #' @importFrom ggplot2 geom_histogram element_text facet_wrap geom_point geom_step geom_vline labs theme xlim

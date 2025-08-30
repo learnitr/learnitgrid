@@ -14,8 +14,9 @@
 #' @return The decoded content of the result file for `read_ref()` or the
 #'   number of bytes written for `make_ref()`.
 #' @export
-make_ref <- function(name, ..., dir1 = here::here("tests", "results"),
-    dir2 = here::here("tests", "reference"),
+make_ref <- function(name, ...,
+    dir1 = fs::path(rprojroot::find_package_root_file(), "tests", "results"),
+    dir2 = fs::path(rprojroot::find_package_root_file(), "tests", "reference"),
   nthreads = parallel::detectCores(logical = FALSE)) {
   res <- read_res(name, ..., dir = dir1, nthreads = nthreads)
   res <- qs::qserialize(res, preset = "archive")
@@ -25,7 +26,8 @@ make_ref <- function(name, ..., dir1 = here::here("tests", "results"),
 
 #' @export
 #' @rdname make_ref
-read_ref <- function(name, ..., dir = here::here("tests", "reference"),
+read_ref <- function(name, ...,
+  dir = fs::path(rprojroot::find_package_root_file(), "tests", "reference"),
     nthreads = parallel::detectCores(logical = FALSE)) {
   res <- qs::qread(fs::path(dir, name), nthreads = nthreads, ...)
   res <- qs::base85_decode(res)

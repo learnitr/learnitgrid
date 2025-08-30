@@ -8,15 +8,15 @@
 make_ref(
   name,
   ...,
-  dir1 = here::here("tests", "results"),
-  dir2 = here::here("tests", "reference"),
+  dir1 = fs::path(rprojroot::find_package_root_file(), "tests", "results"),
+  dir2 = fs::path(rprojroot::find_package_root_file(), "tests", "reference"),
   nthreads = parallel::detectCores(logical = FALSE)
 )
 
 read_ref(
   name,
   ...,
-  dir = here::here("tests", "reference"),
+  dir = fs::path(rprojroot::find_package_root_file(), "tests", "reference"),
   nthreads = parallel::detectCores(logical = FALSE)
 )
 }

@@ -104,7 +104,6 @@ save_as_solution <- function(file = NULL) {
     rstudioapi::documentSave()
   }
   stopifnot(is.character(file), length(file) == 1, nchar(file) > 0)
-  file <- here::here(file)
   if (!fs::file_exists(file))
     stop("File not found")
   filename <- basename(file)

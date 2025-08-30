@@ -26,5 +26,5 @@ selected items are also written in a result file)
 \description{
 A simple multiple choice system in a R chunk, compatible with git and R
 Markdown or Quarto documents. \code{obfuscate()} and \code{get_word()} are used to hide
-correct answers in the {testthat} tests.
+correct answers in the testthat tests.
 }

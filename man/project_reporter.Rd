@@ -2,13 +2,13 @@
 % Please edit documentation in R/project_reporter.R
 \name{project_reporter}
 \alias{project_reporter}
-\title{Create a {testthat} reporter suitable to test projects}
+\title{Create a testthat reporter suitable to test projects}
 \usage{
 project_reporter()
 }
 \value{
-A {testthat} reporter
+A testthat reporter
 }
 \description{
-Create a {testthat} reporter suitable to test projects
+Create a testthat reporter suitable to test projects
 }

@@ -13,6 +13,7 @@
 #' @export
 #'
 #' @examples
+#' # not yet
 df_structure <- function(object, ...) {
   list(
     names = if (is.matrix(object)) colnames(object) else names(object),

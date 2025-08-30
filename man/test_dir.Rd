@@ -9,7 +9,7 @@ test_dir(path, reporter = project_reporter(), times = 10L, ...)
 \arguments{
 \item{path}{The path to test}
 
-\item{reporter}{The {testthat} reporter to use}
+\item{reporter}{The testthat reporter to use}
 
 \item{times}{The maximum number of times the tests can be run by the end-user}
 

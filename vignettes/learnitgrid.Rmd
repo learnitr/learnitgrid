@@ -11,11 +11,9 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+library(learnitgrid)
 ```
 
 The {learnitgrid} package implements an application to ease the correction of projects where students have to complete R scripts, R Markdown or Quarto documents. The correction is done by using evaluation grids (or rubrics).

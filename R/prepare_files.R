@@ -19,8 +19,9 @@ prepare_files <- function(type = "original", remove_last_saved = FALSE,
   if (type != "original" && type != "solution")
     stop("type must be either original or solution")
   # Get a list of original/solution files
-  files <- fs::dir_ls(here::here(), all = TRUE, recurse = TRUE,
-    type = "file", regexp = paste0("_", type, "\\.[a-zA-Z0-9]+$"))
+  files <- fs::dir_ls(rprojroot::find_package_root_file(),
+    all = TRUE, recurse = TRUE, type = "file",
+    regexp = paste0("_", type, "\\.[a-zA-Z0-9]+$"))
   if (!length(files)) {# There MUST be at least one orig|solut file
     if (isTRUE(error)) {
       stop("No ", type, " files found")

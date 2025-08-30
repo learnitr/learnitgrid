@@ -6,6 +6,8 @@
 \alias{learnitgrid-package}
 \title{learnitgrid: Manage Rubrics or Assessment Grids for GitHub Repositories}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 Create and manage semi-automatically rubrics to assess GitHub projects (R scripts, R Markdown or Quarto files). Create directed projects where students have to complete documents and submit them to GitHub (classroom) so that they are evaluated using the rubric (or assessment grid).
 }
 \details{
@@ -28,6 +30,7 @@ Useful links:
 \itemize{
   \item \url{https://github.com/learnitr/learnitgrid}
   \item \url{https://learnitr.github.io/learnitgrid/}
+  \item \url{https://learnitr.r-universe.dev/learnitgrid}
   \item Report bugs at \url{https://github.com/learnitr/learnitgrid/issues}
 }
 

@@ -1,3 +1,7 @@
+# learnitgrid 0.9.1
+
+-   `here::here()` is replaced everywhere by `rprojroot::find_package_root_file()` because the former is not suitable any more in packages (it is for interactive use only).
+
 # learnitgrid 0.9.0
 
 -   Functions required to run projects and test that are added.

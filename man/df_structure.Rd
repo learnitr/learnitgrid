@@ -42,3 +42,6 @@ the object parts.
 Transformation functions for creating reference or result objects for testing
 progress of the students in their project.
 }
+\examples{
+# not yet
+}

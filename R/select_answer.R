@@ -30,7 +30,8 @@ select_answer <- function(x, name = NULL) {
   if (is.null(name))
     name <- knitr::opts_current$get('label')
   if (!is.null(name)) {
-    dir.create(here::here("tests", "results"), showWarnings = FALSE)
+    dir.create(fs::path(dir = fs::path(rprojroot::find_package_root_file(),
+      "tests", "results"),"tests", "results"), showWarnings = FALSE)
     res <- digest::digest(ans)
     # In case we are in correction mode, output more info
     if (getOption("learnitdown.correction", default = FALSE)) {

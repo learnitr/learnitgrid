@@ -12,7 +12,7 @@
 #' @return The result from `make` is returned
 #' @export
 make_test <- function() {
-  odir <- setwd(here::here("tests"))
+  odir <- setwd(fs::path(rprojroot::find_package_root_file(), "tests"))
   on.exit(setwd(odir))
   system("make -s test")
 }
@@ -20,7 +20,7 @@ make_test <- function() {
 #' @export
 #' @rdname make_test
 make_clean <- function() {
-  odir <- setwd(here::here("tests"))
+  odir <- setwd(fs::path(rprojroot::find_package_root_file(), "tests"))
   on.exit(setwd(odir))
   system("make -s clean")
 }
@@ -28,7 +28,7 @@ make_clean <- function() {
 #' @export
 #' @rdname make_test
 make_original <- function() {
-  odir <- setwd(here::here("tests"))
+  odir <- setwd(fs::path(rprojroot::find_package_root_file(), "tests"))
   on.exit(setwd(odir))
   system("make -s original")
 }
@@ -36,7 +36,7 @@ make_original <- function() {
 #' @export
 #' @rdname make_test
 make_solution <- function() {
-  odir <- setwd(here::here("tests"))
+  odir <- setwd(fs::path(rprojroot::find_package_root_file(), "tests"))
   on.exit(setwd(odir))
   system("make -s solution")
 }
@@ -44,7 +44,7 @@ make_solution <- function() {
 #' @export
 #' @rdname make_test
 make_prepare <- function() {
-  odir <- setwd(here::here("tests"))
+  odir <- setwd(fs::path(rprojroot::find_package_root_file(), "tests"))
   on.exit(setwd(odir))
   system("make -s prepare")
 }

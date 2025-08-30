@@ -17,4 +17,8 @@
 ^README\.Rmd$
 ^README\.md$
 ^TODO\.md$
+^.vscode$
 data-raw
+data-raw/*
+
+rsconnect
