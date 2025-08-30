@@ -1,6 +1,6 @@
 # learnitgrid 0.9.2
 
--   Adaptation to {parsermd} v0.2.0: the `parse_rmd()`function lost its `allow_incomplete=` argument.
+-   Adaptation to {parsermd} v0.2.0: the `parse_rmd()` function lost its `allow_incomplete=` argument.
 
 # learnitgrid 0.9.1
 
