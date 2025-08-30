@@ -3,7 +3,7 @@ pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   learnitgrid: learnitgrid.html
-last_built: 2025-08-30T09:13Z
+last_built: 2025-08-30T09:38Z
 urls:
   reference: https://learnitr.github.io/learnitgrid/reference
   article: https://learnitr.github.io/learnitgrid/articles
