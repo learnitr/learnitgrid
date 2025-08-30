@@ -1,6 +1,6 @@
 Package: learnitgrid
 Type: Package
-Version: 0.9.1
+Version: 0.9.2
 Title: Manage Rubrics or Assessment Grids for GitHub Repositories
 Description: Create and manage semi-automatically rubrics to assess GitHub
   projects (R scripts, R Markdown or Quarto files). Create directed projects

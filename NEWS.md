@@ -1,3 +1,7 @@
+# learnitgrid 0.9.2
+
+-   Adaptation to {parsermd} v0.2.0: the `parse_rmd()`function lost its `allow_incomplete=` argument.
+
 # learnitgrid 0.9.1
 
 -   `here::here()` is replaced everywhere by `rprojroot::find_package_root_file()` because the former is not suitable any more in packages (it is for interactive use only).

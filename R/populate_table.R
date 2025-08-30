@@ -272,7 +272,7 @@ populate_table <- function(items, grids = "all", context,
             # them with another character
             rmd_content <- correct_rmd(rmd_content)
             # Try parsing the Rmd content
-            rmd <- try(parse_rmd(rmd_content, allow_incomplete = TRUE),
+            rmd <- try(parse_rmd(rmd_content), # PhG: not in v0.2.0 , allow_incomplete = TRUE),
               silent = TRUE)
             if (inherits(rmd, "try-error")) {
               headers[i] <- "<b>ERREUR SYNTAXE RMD</b>"
@@ -309,7 +309,7 @@ populate_table <- function(items, grids = "all", context,
             # them with another character
             rmd_content <- correct_rmd(rmd_content)
             # Try parsing the Rmd content
-            rmd <- try(parse_rmd(rmd_content, allow_incomplete = TRUE),
+            rmd <- try(parse_rmd(rmd_content), # PhG: not in v0.2.0 , allow_incomplete = TRUE),, allow_incomplete = TRUE),
               silent = TRUE)
             if (inherits(rmd, "try-error")) {
               sections[i] <- "<b>ERREUR SYNTAXE RMD</b>"
@@ -363,7 +363,7 @@ populate_table <- function(items, grids = "all", context,
             # them with another character
             rmd_content <- correct_rmd(rmd_content)
             # Try parsing the Rmd content
-            rmd <- try(parse_rmd(rmd_content, allow_incomplete = TRUE),
+            rmd <- try(parse_rmd(rmd_content), # PhG: not in v0.2.0 , allow_incomplete = TRUE),, allow_incomplete = TRUE),
               silent = TRUE)
             if (inherits(rmd, "try-error")) {
               codes[i] <- "<b>ERREUR SYNTAXE RMD</b>"
@@ -429,7 +429,7 @@ populate_table <- function(items, grids = "all", context,
             # them with another character
             rmd_content <- correct_rmd(rmd_content)
             # Try parsing the Rmd content
-            rmd <- try(parse_rmd(rmd_content, allow_incomplete = TRUE),
+            rmd <- try(parse_rmd(rmd_content), # PhG: not in v0.2.0 , allow_incomplete = TRUE),, allow_incomplete = TRUE),
               silent = TRUE)
             if (inherits(rmd, "try-error")) {
               paras[i] <- "<b>ERREUR SYNTAXE RMD</b>"
