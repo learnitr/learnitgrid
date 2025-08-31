@@ -61,7 +61,8 @@ Remotes:
     SciViews/data.io,
     SciViews/data.trame,
     SciViews/svBase,
-    SciViews/svMisc
+    SciViews/svMisc,
+    rstudio/ggcheck
 License: MIT + file LICENSE
 URL: https://github.com/learnitr/learnitgrid, https://learnitr.github.io/learnitgrid/, https://learnitr.r-universe.dev/learnitgrid
 BugReports: https://github.com/learnitr/learnitgrid/issues
