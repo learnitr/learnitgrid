@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">learnitgrid</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -169,6 +169,24 @@
 <span>  fun <span class="op">=</span> <span class="va">object_str</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  env <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ROCS</span><span class="op">(</span></span>
+<span>  object <span class="op">=</span> <span class="st">".Last.chunk"</span>,</span>
+<span>  arg <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  name <span class="op">=</span> <span class="va">object</span>,</span>
+<span>  fun <span class="op">=</span> <span class="va">chart_structure</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  env <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">RNCS</span><span class="op">(</span></span>
+<span>  <span class="va">name</span>,</span>
+<span>  arg <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  object <span class="op">=</span> <span class="st">".Last.chunk"</span>,</span>
+<span>  fun <span class="op">=</span> <span class="va">chart_structure</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  env <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -213,6 +231,12 @@ functions using <code><a href="https://rdrr.io/pkg/qs/man/qsave.html" class="ext
 
 <dt id="arg-attrib">attrib<a class="anchor" aria-label="anchor" href="#arg-attrib"></a></dt>
 <dd><p>The attribute(s) to use</p></dd>
+
+
+<dt id="arg-arg">arg<a class="anchor" aria-label="anchor" href="#arg-arg"></a></dt>
+<dd><p>Additional argument to the function used to compute results.
+Currently, could be <code>""</code> (by default) to record everything, or <code>"no.data"</code>
+to ignore data in ggplot objects in <code>ROCS()</code> and <code>RNCS()</code>.</p></dd>
 
 </dl></div>
     <div id="value">
