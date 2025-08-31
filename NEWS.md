@@ -1,3 +1,9 @@
+# learnitgrid 1.0.0
+
+-   New record functions: `RNCS()` and `ROCS`, using `chart_structure()`. For a better record of chat/ggplot2 information. The {ggcheck} package is a new dependency.
+
+-   Correction of a bug in `hook_record()`: argument `object_name=` instead on `object=`.
+
 # learnitgrid 0.9.2
 
 -   Adaptation to {parsermd} v0.2.0: the `parse_rmd()` function lost its `allow_incomplete=` argument.

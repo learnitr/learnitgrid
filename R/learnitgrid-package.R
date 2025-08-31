@@ -26,6 +26,7 @@
 #' @importFrom fs path dir_create dir_exists dir_ls file_exists link_create link_delete link_exists
 #' @importFrom collapse fcumsum GRP roworder
 #' @importFrom ggplot2 geom_histogram element_text facet_wrap geom_point geom_step geom_vline labs theme xlim
+#' @importFrom ggcheck get_coordinate_system get_data get_geoms get_labels get_mappings get_stats n_layers
 #' @importFrom stats fivenum
 #' @importFrom lubridate ymd_hms with_tz
 #' @importFrom openssl md5

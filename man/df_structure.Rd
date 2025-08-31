@@ -6,6 +6,7 @@
 \alias{object_attr}
 \alias{object_part}
 \alias{object_str}
+\alias{chart_structure}
 \title{Transformation functions for creating reference or result objects for testing
 progress of the students in their project.}
 \usage{
@@ -18,6 +19,8 @@ object_attr(object, attrib = "class", ...)
 object_part(object, part = "x", ...)
 
 object_str(object, part = "x", ...)
+
+chart_structure(object, arg = "", ...)
 }
 \arguments{
 \item{object}{The object to transform}
@@ -29,6 +32,9 @@ object_str(object, part = "x", ...)
 \item{attrib}{The attribute(s) to record from the object}
 
 \item{part}{The part(s) to record from the object (list items)}
+
+\item{arg}{Additional argument. Currently, could be \code{""} (by default) to
+record everything, or \code{"no.data"} to ignore data in ggplot objects.}
 }
 \value{
 \code{df_structure()} returns names, attributes "label" and "units",

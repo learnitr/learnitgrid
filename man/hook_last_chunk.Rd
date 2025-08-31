@@ -2,9 +2,16 @@
 % Please edit documentation in R/knitr_hook.R
 \name{hook_last_chunk}
 \alias{hook_last_chunk}
-\title{Configure Knitr to generate a .Last.chunk object}
+\alias{hook_record}
+\title{Functions for Quarto and R Markdown documents
+Knitr hooks to save the result of evaluations in chunks as \code{.Last.chunk} (if
+printed because things returned invisibly are not recorded). Configure Knitr
+to generate a \code{.Last.chunk} object. Also set a "record" hook to record objects
+in the learnitgrid format for further inspection of the results.}
 \usage{
 hook_last_chunk()
+
+hook_record()
 }
 \value{
 The \code{opts_chunk} or the \code{knit_hook} set accordingly.

@@ -74,3 +74,23 @@ object_str <- function(object, part = "x", ...) {
   res <- object_part(object, part = part)
   str(res, ...) |> utils::capture.output()
 }
+
+#' @export
+#' @rdname df_structure
+#' @param arg Additional argument. Currently, could be `""` (by default) to
+#'   record everything, or `"no.data"` to ignore data in ggplot objects.
+chart_structure <- function(object, arg = "", ...) {
+  list(
+    n_layers = ggcheck::n_layers(object),
+    data = if (grepl("no.data", arg, fixed = TRUE)) {
+      NULL # Data not considered, only structure of the plot
+    } else {
+      learnitgrid::digest(ggcheck::get_data(object))
+    },
+    labels = ggcheck::get_labels(object),
+    geoms = ggcheck::get_geoms(object),
+    stats = ggcheck::get_stats(object),
+    coords = ggcheck::get_coordinate_system(object),
+    mapping = ggcheck::get_mappings(object)
+  )
+}

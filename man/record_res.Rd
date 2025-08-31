@@ -16,6 +16,8 @@
 \alias{RNA}
 \alias{ROSTR}
 \alias{RNSTR}
+\alias{ROCS}
+\alias{RNCS}
 \title{Record, read and write results that capture given characteristics of an object}
 \usage{
 record_res(
@@ -132,6 +134,24 @@ RNSTR(
   ...,
   env = parent.frame()
 )
+
+ROCS(
+  object = ".Last.chunk",
+  arg = "",
+  name = object,
+  fun = chart_structure,
+  ...,
+  env = parent.frame()
+)
+
+RNCS(
+  name,
+  arg = "",
+  object = ".Last.chunk",
+  fun = chart_structure,
+  ...,
+  env = parent.frame()
+)
 }
 \arguments{
 \item{object}{The object to record results from (\code{".Last.chunk"} by default,
@@ -154,6 +174,10 @@ functions using \code{\link[qs:qsave]{qs::qsave()}} and \code{\link[qs:qread]{qs
 \item{part}{The part(s) (list item(s)) to use}
 
 \item{attrib}{The attribute(s) to use}
+
+\item{arg}{Additional argument to the function used to compute results.
+Currently, could be \code{""} (by default) to record everything, or \code{"no.data"}
+to ignore data in ggplot objects in \code{ROCS()} and \code{RNCS()}.}
 }
 \value{
 The deserialized results for \code{read_res()} or the number of bytes

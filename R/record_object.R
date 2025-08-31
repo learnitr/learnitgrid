@@ -5,6 +5,9 @@
 #'   R Markdown or Quarto document)
 #' @param name The name of the result file
 #' @param fun The function used to compute results for the object
+#' @param arg Additional argument to the function used to compute results.
+#'   Currently, could be `""` (by default) to record everything, or `"no.data"`
+#'   to ignore data in ggplot objects in `ROCS()` and `RNCS()`.
 #' @param ... Additional arguments to pass to `fun=` or to the read/write
 #'   functions using [qs::qsave()] and [qs::qread()]
 #' @param dir The directory where to save the results
@@ -140,3 +143,17 @@ RNSTR <- function(name, part = "x", object = ".Last.chunk",
   fun = object_str, ..., env = parent.frame())
   record_res(object = object, name = name, fun = fun, part = part,
     ..., env = env)
+
+#' @export
+#' @rdname record_res
+ROCS <- function(object = ".Last.chunk", arg = "", name = object,
+  fun = chart_structure, ..., env = parent.frame())
+  learnitgrid::record_res(object = object, name = name, fun = fun,
+    arg = arg, ..., env = env)
+
+#' @export
+#' @rdname record_res
+RNCS <- function(name, arg = "", object = ".Last.chunk", fun = chart_structure,
+  ..., env = parent.frame())
+  learnitgrid::record_res(object = object, name = name, fun = fun,
+    arg = arg, ..., env = env)

@@ -1,8 +1,9 @@
-# Functions for Quarto and R Markdown documents ---------------------------
+#' Functions for Quarto and R Markdown documents
 
-# A hook to save the result of evaluations in chunks as .Last.chunk (if printed
-# because things returned invisibly are not recorded)
-#' Configure Knitr to generate a .Last.chunk object
+#' Knitr hooks to save the result of evaluations in chunks as `.Last.chunk` (if
+#' printed because things returned invisibly are not recorded). Configure Knitr
+#' to generate a `.Last.chunk` object. Also set a "record" hook to record objects
+#' in the learnitgrid format for further inspection of the results.
 #'
 #' @description
 #' Change the Knitr renderer so that the last computed object is automatically
@@ -18,6 +19,8 @@ hook_last_chunk <- function() {
   })
 }
 
+#' @rdname hook_last_chunk
+#' @export
 hook_record <- function() {
   # A hook to save results after a code chunk is evaluated
   knitr::knit_hooks$set(record = function(before, options, envir) {
@@ -44,16 +47,16 @@ hook_record <- function() {
       arg <- options$arg
       if (is.null(arg)) {
         if (is.null(procfun)) {
-          fun(object_name = object, name = options$label, env = envir)
+          fun(object = object, name = options$label, env = envir)
         } else {
-          fun(object_name = object, name = options$label,
+          fun(object = object, name = options$label,
             fun = procfun, env = envir)
         }
       } else {# There is an extra argument
         if (is.null(procfun)) {
-          fun(object_name = object, name = options$label, arg, env = envir)
+          fun(object = object, name = options$label, arg, env = envir)
         } else {
-          fun(object_name = object, name = options$label, arg,
+          fun(object = object, name = options$label, arg,
             fun = procfun, env = envir)
         }
       }
