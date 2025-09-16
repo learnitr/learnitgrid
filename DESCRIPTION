@@ -1,6 +1,6 @@
 Package: learnitgrid
 Type: Package
-Version: 1.0.0
+Version: 1.1.0
 Title: Manage Rubrics or Assessment Grids for GitHub Repositories
 Description: Create and manage semi-automatically rubrics to assess GitHub
   projects (R scripts, R Markdown or Quarto files). Create directed projects
@@ -23,7 +23,7 @@ Imports:
     collapse (>= 2.1.0),
     cowplot (>= 1.1.3),
     data.io (>= 1.7.0),
-    diffr (>= 0.3.0),
+    diffr,
     digest (>= 0.6.37),
     DT (>= 0.33),
     flashClust (>= 1.1.2),

@@ -38,14 +38,11 @@
 #' @importFrom testthat LocationReporter test_dir
 #' @importFrom DT datatable dataTableOutput formatStyle JS renderDataTable styleEqual
 #' @importFrom flashClust hclust
-#' @importFrom shiny shinyApp runApp
+#' @importFrom shiny shinyApp runApp fluidPage h1 selectInput updateSelectInput showNotification
 #' @importFrom shinydashboard dashboardBody dashboardHeader dashboardPage dashboardSidebar
 #' @importFrom shinycssloaders withSpinner
 #' @importFrom stringdist stringsim
 #' @importFrom utils browseURL read.csv str untar write.csv
 #' @importFrom writexl write_xlsx
-# The following block is used by usethis to automatically manage
-# roxygen namespace tags. Modify with care!
-## usethis namespace: start
-## usethis namespace: end
+#' @importFrom diffr diffr diffrOutput renderDiffr
 NULL
