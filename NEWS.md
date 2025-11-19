@@ -1,3 +1,7 @@
+# learnitgrid 1.0.1
+
+-   `decrypt_solutions()` now doew not consider files starting with `._` as encrypted files (may be macOS file resources on some file systems).
+
 # learnitgrid 1.0.0
 
 -   New record functions: `RNCS()` and `ROCS`, using `chart_structure()`. For a better record of chat/ggplot2 information. The {ggcheck} package is a new dependency.
