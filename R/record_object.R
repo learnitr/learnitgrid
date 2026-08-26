@@ -9,7 +9,7 @@
 #'   Currently, could be `""` (by default) to record everything, or `"no.data"`
 #'   to ignore data in ggplot objects in `ROCS()` and `RNCS()`.
 #' @param ... Additional arguments to pass to `fun=` or to the read/write
-#'   functions using [qs::qsave()] and [qs::qread()]
+#'   functions using [qs2::qs_save()] and [qs2::qs_read()]
 #' @param dir The directory where to save the results
 #' @param env The environment where to look for the object
 #' @param nthreads The number of threads to use for reading and writing
@@ -52,7 +52,7 @@ record_res <- function(object = ".Last.chunk", name = object,
 read_res <- function(name, ...,
     dir = fs::path(rprojroot::find_package_root_file(), "tests", "results"),
     nthreads = parallel::detectCores(logical = FALSE)) {
-  qs::qread(fs::path(dir, name), nthreads = nthreads, ...)
+  qs2::qs_read(fs::path(dir, name), nthreads = nthreads, ...)
 }
 
 #' @export
@@ -61,7 +61,7 @@ write_res <- function(object, name, ...,
     dir = fs::path(rprojroot::find_package_root_file(), "tests", "results"),
     nthreads = parallel::detectCores(logical = FALSE)) {
   fs::dir_create(dir)
-  qs::qsave(object, file = fs::path(dir, name), nthreads = nthreads, ...)
+  qs2::qs_save(object, file = fs::path(dir, name), nthreads = nthreads, ...)
 }
 
 # Shortcuts

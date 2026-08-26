@@ -5,7 +5,7 @@
 #' copy of the result files. They are reencoded to avoid someone could just copy and paste from the reference to the results directories and cheat.
 #'
 #' @param name Name of the result file to transform into a reference file
-#' @param ... Further parameters passed to [qs::qread()]
+#' @param ... Further parameters passed to [qs2::qd_read()]
 #' @param dir1 Directory containing the result file
 #' @param dir2 Directory where to place the reference file
 #' @param dir Directory containing the reference file
@@ -19,9 +19,9 @@ make_ref <- function(name, ...,
     dir2 = fs::path(rprojroot::find_package_root_file(), "tests", "reference"),
   nthreads = parallel::detectCores(logical = FALSE)) {
   res <- read_res(name, ..., dir = dir1, nthreads = nthreads)
-  res <- qs::qserialize(res, preset = "archive")
-  res <- qs::base85_encode(res)
-  qs::qsave(res, file = fs::path(dir2, name), nthreads = nthreads, ...)
+  res <- qs2::qs_serialize(res) #, preset = "archive")
+  res <- qs2::base85_encode(res)
+  qs2::qs_save(res, file = fs::path(dir2, name), nthreads = nthreads, ...)
 }
 
 #' @export
@@ -29,7 +29,7 @@ make_ref <- function(name, ...,
 read_ref <- function(name, ...,
   dir = fs::path(rprojroot::find_package_root_file(), "tests", "reference"),
     nthreads = parallel::detectCores(logical = FALSE)) {
-  res <- qs::qread(fs::path(dir, name), nthreads = nthreads, ...)
-  res <- qs::base85_decode(res)
-  qs::qdeserialize(res)
+  res <- qs2::qs_read(fs::path(dir, name), nthreads = nthreads, ...)
+  res <- qs2::base85_decode(res)
+  qs2::qs_deserialize(res)
 }

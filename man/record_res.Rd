@@ -163,7 +163,7 @@ R Markdown or Quarto document)}
 \item{fun}{The function used to compute results for the object}
 
 \item{...}{Additional arguments to pass to \verb{fun=} or to the read/write
-functions using \code{\link[qs:qsave]{qs::qsave()}} and \code{\link[qs:qread]{qs::qread()}}}
+functions using \code{\link[qs2:qs_save]{qs2::qs_save()}} and \code{\link[qs2:qs_read]{qs2::qs_read()}}}
 
 \item{dir}{The directory where to save the results}
 

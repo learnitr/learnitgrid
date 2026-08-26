@@ -32,7 +32,7 @@
 #' @importFrom openssl md5
 #' @importFrom parsermd as_document by_section has_label has_type parse_rmd rmd_select
 #' @importFrom purrr map
-#' @importFrom qs base85_decode base85_encode base91_decode base91_encode qdeserialize qread qsave qserialize
+#' @importFrom qs2 base85_decode base85_encode base91_decode base91_encode qs_deserialize qs_read qs_save qs_serialize
 #' @importFrom rstudioapi documentPath documentSave isAvailable
 #' @importFrom svMisc assign_temp
 #' @importFrom testthat LocationReporter test_dir

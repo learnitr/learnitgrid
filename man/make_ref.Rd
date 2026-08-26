@@ -23,7 +23,7 @@ read_ref(
 \arguments{
 \item{name}{Name of the result file to transform into a reference file}
 
-\item{...}{Further parameters passed to \code{\link[qs:qread]{qs::qread()}}}
+\item{...}{Further parameters passed to \code{\link[qs2:qd_read]{qs2::qd_read()}}}
 
 \item{dir1}{Directory containing the result file}
 

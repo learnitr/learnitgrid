@@ -1,6 +1,10 @@
+# learnitgrid 1.1.0
+
+-   Drop {qs} in favor of {qs2}. Since they are incompatible, all tests in projects must be recompiled.
+
 # learnitgrid 1.0.1
 
--   `decrypt_solutions()` now doew not consider files starting with `._` as encrypted files (may be macOS file resources on some file systems).
+-   `decrypt_solutions()` now does not consider files starting with `._` as encrypted files (may be macOS file resources on some file systems).
 
 # learnitgrid 1.0.0
 

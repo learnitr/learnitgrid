@@ -78,7 +78,7 @@ set_key <- function() {
   # Try first to retrieve it from a file
   key_file <- fs::path(rprojroot::find_package_root_file(), "tests", ".key")
   if (fs::file_exists(key_file))
-    return(qs::qread(key_file))
+    return(qs2::qd_read(key_file))
   pass <- askpass::askpass("Veuillez entrer le mode de passe :")
   if (is.null(pass)) # User cancelled
     return()
@@ -87,6 +87,6 @@ set_key <- function() {
   key <- charToRaw(pass) |> openssl::md5()
   class(key) <- c("aes", "raw")
   # Save this key
-  qs::qsave(key, file = key_file)
+  qs2::qd_save(key, file = key_file)
   invisible(key)
 }

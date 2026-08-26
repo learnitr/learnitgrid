@@ -49,12 +49,12 @@ select_answer <- function(x, name = NULL) {
 #' @rdname select_answer
 obfuscate <- function(x) {
   stopifnot(length(x) == 1, is.character(x))
-  qs::base91_encode(charToRaw(x))
+  qs2::base91_encode(charToRaw(x))
 }
 
 #' @export
 #' @rdname select_answer
 get_word <- function(x) {
   stopifnot(length(x) == 1, is.character(x))
-  rawToChar(qs::base91_decode(x))
+  rawToChar(qs2::base91_decode(x))
 }
