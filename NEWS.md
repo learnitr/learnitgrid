@@ -1,3 +1,7 @@
+# learnitgrid 1.1.1
+
+-   Change order of remotes in DESCRIPTION, trying to resolve a compilation problem on R-Universe.
+
 # learnitgrid 1.1.0
 
 -   Drop {qs} in favor of {qs2}. Since they are incompatible, all tests in projects must be recompiled.
