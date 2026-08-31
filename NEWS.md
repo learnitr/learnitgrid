@@ -1,3 +1,7 @@
+# learnitgrid 1.1.2
+
+-   Minimal version for {svMisc} is now 1.4.3 (current CRAN version). Otherwise, R Universe cannot compile {learnitgrid}.
+
 # learnitgrid 1.1.1
 
 -   Change order of remotes in DESCRIPTION, trying to resolve a compilation problem on R-Universe.
