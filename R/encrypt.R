@@ -49,7 +49,7 @@ decrypt_solutions <- function(key = NULL, error = TRUE) {
     regexp = "_solution\\.[a-zA-Z0-9]+.aes$")
   # Eliminate files starting with ._ (MacOS resource fork files)
   # (These files may appear when the repository is on a network drive)
-  enc_files <- enc_files[!grepl("^\\._", enc_files)]
+  enc_files <- enc_files[!grepl("^\\._", basename(enc_files))]
   if (!length(enc_files)) {
     if (isTRUE(error)) {
       stop("No encoded solution files found")

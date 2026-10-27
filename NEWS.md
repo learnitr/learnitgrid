@@ -1,6 +1,7 @@
 # learnitgrid 1.1.2
 
 -   Minimal version for {svMisc} is now 1.4.3 (current CRAN version). Otherwise, R Universe cannot compile {learnitgrid}.
+-   `decrypt_solutions()` now excludes files starting with `._` (macOS resource files).
 
 # learnitgrid 1.1.1
 
