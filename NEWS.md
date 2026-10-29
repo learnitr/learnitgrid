@@ -1,3 +1,7 @@
+# learnitgrid 1.1.3
+
+-   Correction in `is_identical_to_ref()` and `is_equal_to_ref()`: return if both objects are `NULL`.
+
 # learnitgrid 1.1.2
 
 -   Minimal version for {svMisc} is now 1.4.3 (current CRAN version). Otherwise, R Universe cannot compile {learnitgrid}.

@@ -22,7 +22,7 @@ is_identical_to_ref <- function(name, part = NULL, attr = NULL) {
 
   # Items cannot be NULL
   if (is.null(res) && is.null(ref))
-    structure(FALSE, message = "Both res and ref are NULL")
+    return(structure(FALSE, message = "Both res and ref are NULL"))
 
   identical(res, ref)
 }
@@ -45,9 +45,9 @@ is_equal_to_ref <- function(name, part = NULL, attr = NULL) {
 
   # Items cannot be NULL
   if (is.null(res) && is.null(ref))
-    structure(FALSE, message = "Both res and ref are NULL")
+    return(structure(FALSE, message = "Both res and ref are NULL"))
 
-  all.equal(res, ref)
+  isTRUE(all.equal(res, ref))
 }
 
 # Check if the rendered version of a Quarto or R Markdown file exists
